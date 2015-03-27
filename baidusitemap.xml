@@ -3,11 +3,31 @@
 
     
   <url>
-    <loc>http://www.enjoyhot.top/2014/03/24/NDK-for-android/</loc>
-    <lastmod>2015-03-27T08:17:44.000Z</lastmod>
+    <loc>http://www.enjoyhot.top/2015/03/26/myphoto/</loc>
+    <lastmod>2015-03-27T08:25:37.000Z</lastmod>
     <data>
         <display>
-        <title></title>
+        <title>myphoto</title>
+        <pubTime>2015-03-26T15:45:21.000Z</pubTime>
+        
+        <tag>photo </tag>
+         
+         
+           
+             
+              <breadCrumb title="photo" url="http://www.enjoyhot.top/categories/photo/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/03/24/NDK-for-android/</loc>
+    <lastmod>2015-03-27T08:24:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>androidNDK开发之JNI学习</title>
         <pubTime>2014-03-24T12:23:50.000Z</pubTime>
         
         <tag>NDK </tag>
@@ -41,23 +61,6 @@
              
               <breadCrumb title="HPC" url="http://www.enjoyhot.top/categories/HPC/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.enjoyhot.top/2015/03/26/myphoto/</loc>
-    <lastmod>2015-03-27T08:09:49.000Z</lastmod>
-    <data>
-        <display>
-        <title>myphoto</title>
-        <pubTime>2015-03-26T15:45:21.000Z</pubTime>
-        
-        <tag>photo </tag>
-         
-         
-           
         </display>
     </data>
     </url>
