@@ -1,0 +1,543 @@
+
+<!doctype html>
+<html dir="ltr" lang="zh-CN">
+<p>本篇论文原来自于OSChina，图床效果可能表现得不是很好</p>
+<head>
+<title>androidNDK开发之JNI学习</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+body {font:normal 12px/24px Arial, Helvetica, sans-serif; background:#D9F0DB;}
+textarea,pre {font-family:Courier; font-size:12px;}
+</style>
+</head>
+<body>
+<p><a href="http://enjoyhot.top" target="_blank" rel="external">&lt;&lt;目录</a></p><p>androidNDK开发之JNI学习</p>
+<p></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">1、在工程目录下编译</span></p>
+<a id="more"></a>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;&nbsp;&nbsp;javah&nbsp;-classpath&nbsp;F:\eclipse\adt-bundle-windows-x86-201309017\sdk\platforms\android-19\android.jar;bin/classes&nbsp;com.example.jnithread.MainActivity</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">2、增加<span style="font-family:Calibri">log</span>信息的方法</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;&nbsp;在<span style="font-family:Calibri">.c</span>文件中添加</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;&nbsp;&nbsp;#define&nbsp;LOG_TAG&nbsp;&quot;System.out.cpp&quot;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;&nbsp;&nbsp;#define&nbsp;LOGD(...)&nbsp;__android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;&nbsp;&nbsp;#define&nbsp;LOGI(...)&nbsp;__android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;&nbsp;在配置<span style="font-family:Calibri">mk</span>文件增加</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;&nbsp;&nbsp;#liblog.so&nbsp;libGLESv2.so</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;&nbsp;&nbsp;LOCAL_LDLIBS&nbsp;&#43;=&nbsp;-llog</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;&nbsp;e.g</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;&nbsp;LOGD(&quot;x=%d&quot;,x);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">3、类型转换</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体"><img src="http://static.oschina.net/uploads/space/2014/0804/205406_O7S4_262922.png" alt="" style="max-width:650px"></span><span style="font-family:宋体; font-size:14px">&nbsp;</span></p>
+<table style="margin-bottom:10px; border-collapse:collapse; color:rgb(0,0,0); font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<tbody>
+<tr class="firstRow">
+<td style="padding:5px 10px; border:1px solid rgb(221,221,221)">
+<p style="margin-top:5px; margin-bottom:10px; padding-top:0px; padding-bottom:0px; line-height:23px; text-align:center">
+<span style="color:rgb(85,85,85); font-family:宋体"><strong>Java类型</strong></span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:solid solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:5px; margin-bottom:10px; padding-top:0px; padding-bottom:0px; line-height:23px; text-align:center">
+<span style="color:rgb(85,85,85); font-family:宋体"><strong>本地类型</strong></span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:solid solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:5px; margin-bottom:10px; padding-top:0px; padding-bottom:0px; line-height:23px; text-align:center">
+<span style="color:rgb(85,85,85); font-family:宋体"><strong>描述</strong></span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">boolean</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jboolean</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">C/C&#43;&#43;8位整型</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">byte</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jbyte</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">C/C&#43;&#43;带符号的8位整型</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">char</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jchar</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">C/C&#43;&#43;无符号的16位整型</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">short</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jshort</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">C/C&#43;&#43;带符号的16位整型</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">int</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jint</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">C/C&#43;&#43;带符号的32位整型</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">long</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jlong</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">C/C&#43;&#43;带符号的64位整型</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">float</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jfloat</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">C/C&#43;&#43;32位浮点型</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">double</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jdouble</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">C/C&#43;&#43;64位浮点型</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">Object</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jobject</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">任何Java对象，或者没有对应java类型的对象</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">Class</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jclass</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">Class对象</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">String</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jstring</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">字符串对象</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">Object[]</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jobjectArray</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">任何对象的数组</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">boolean[]</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jbooleanArray</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">布尔型数组</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">byte[]</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jbyteArray</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">比特型数组</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">char[]</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jcharArray</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">字符型数组</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">short[]</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jshortArray</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">短整型数组</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">int[]</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jintArray</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">整型数组</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">long[]</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jlongArray</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">长整型数组</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">float[]</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jfloatArray</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">浮点型数组</span></p>
+</td>
+</tr>
+<tr>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">double[]</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">jdoubleArray</span></p>
+</td>
+<td style="padding:5px 10px; border-width:1px; border-style:none solid solid none; border-color:rgb(221,221,221)">
+<p style="margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; line-height:23px">
+<span style="color:rgb(85,85,85); font-family:宋体">双浮点型数组</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">4、对象传递机制</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Wingdings">&amp;Oslash;&nbsp;</span><span style="font-size:14px; font-family:宋体">假如类为<span style="font-family:Calibri">c/c&#43;&#43;</span>类，并开始在<span style="font-family:Calibri">c/c&#43;&#43;</span>程序建立：</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:28px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">返回对象以<span style="font-family:Calibri">jlong&nbsp;</span>类型强制转换对象的指针&#20540;，从而将<span style="font-family:Calibri">c/c&#43;&#43;</span>的对象返回到<span style="font-family:Calibri">java</span>中以<span style="font-family:Calibri">long</span>变量保存起来，以便后续工作回调<span style="font-family:Calibri">c/c&#43;&#43;</span>中的对象。</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:28px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">e.g&nbsp;&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">dataInCpp&nbsp;*&nbsp;data1=new&nbsp;dataIntCpp();</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">return&nbsp;(jlong)data1;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">////////////////////////////////////////</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">jlong&nbsp;data1;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">dataInCpp&nbsp;*&nbsp;data2&nbsp;=&nbsp;(dataInCpp&nbsp;*)data1;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Wingdings">&amp;Oslash;&nbsp;</span><span style="font-size:14px; font-family:宋体">假如类为<span style="font-family:Calibri">java</span>类，通过<span style="font-family:Calibri">c/c&#43;&#43;</span>程序创建</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">A、在<span style="font-family:Calibri">c&#43;&#43;</span>中创建并返回给<span style="font-family:Calibri">java</span>程序</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">Jclass&nbsp;</span><span style="font-size:14px; font-family:宋体">clazz&nbsp;=&nbsp;env-&gt;FindClass(</span><span style="font-size:14px; font-family:Calibri">“</span><span style="font-size:14px; font-family:宋体">com/example/jnithread/myData</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">I</span><span style="font-size:14px; font-family:宋体">f(!clazz){</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">return&nbsp;NULL;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">}</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">jmethodID&nbsp;constr&nbsp;=&nbsp;env-&gt;GetMethodID(clazz,</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">&lt;init&gt;</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">,</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">()V</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">if(!constr){</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">return;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">}</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">jobject&nbsp;newObj&nbsp;=&nbsp;env-&gt;NewObject(clazz,constr);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">if(!newObj){</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">return;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:56px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">}</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;newObj;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">在<span style="font-family:Calibri">java</span>程序中直接用类型<span style="font-family:Calibri">myData</span>接收即可，无需用<span style="font-family:Calibri">Object</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;&nbsp;&nbsp;B、将<span style="font-family:Calibri">c&#43;&#43;</span>中创建的<span style="font-family:Calibri">java</span>对象再传回给<span style="font-family:Calibri">c&#43;&#43;</span>方法</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; background-color:rgb(255,255,0); font-family:宋体">jclass&nbsp;clazz&nbsp;=&nbsp;env-&gt;GetObjectClass(dataObject);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">接下来和调用<span style="font-family:Calibri">java</span>类中函数一样如下所述</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">5、简单说明一下<span style="font-family:Calibri">c&#43;&#43;</span>调用<span style="font-family:Calibri">java</span>函数：</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:49px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Wingdings">&amp;Oslash;&nbsp;</span><span style="font-size:14px; font-family:宋体">非静态方法调用</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; background-color:rgb(255,255,0); font-family:宋体">jclass&nbsp;dpclazz&nbsp;=&nbsp;e</span><span style="font-size:14px; background-color:rgb(255,255,0); font-family:Calibri">nv-</span><span style="font-size:14px; background-color:rgb(255,255,0); font-family:宋体">&gt;FindClass(</span><span style="font-size:14px; background-color:rgb(255,255,0); font-family:Calibri">”</span><span style="font-size:14px; background-color:rgb(255,255,0); font-family:宋体">com/example/jnithreads/MainActivity</span><span style="font-size:14px; background-color:rgb(255,255,0); font-family:Calibri">”</span><span style="font-size:14px; background-color:rgb(255,255,0); font-family:宋体">);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">if(dpclazz==0){</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">LOGI(</span><span style="font-size:14px; font-family:Calibri">“</span><span style="font-size:14px; font-family:宋体">find&nbsp;class&nbsp;error</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">return;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">}</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">//去得到函数的信息&nbsp;<span style="font-family:Calibri">javap&nbsp;</span></span><span style="font-size:14px; font-family:Calibri">–</span><span style="font-size:14px; font-family:宋体">s&nbsp;com.example.jnithreads.MainActivity</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">jmethod&nbsp;method1&nbsp;=&nbsp;env-&gt;GetMethodID(dpclazz,</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">getNum</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">,(参数<span style="font-family:Calibri">)V);&nbsp;&nbsp;</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">//获取非静态方法的<span style="font-family:Calibri">ID</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">//V代表返回类型为<span style="font-family:Calibri">void,</span>也可<span style="font-family:Calibri">(II)I,</span>表示接收两个<span style="font-family:Calibri">int</span>方法返回<span style="font-family:Calibri">int</span>类型</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">//如果是<span style="font-family:Calibri">String</span>类型的参数写为<span style="font-family:Calibri">(Ljava/lang/String;),</span>如果返回类型为<span style="font-family:Calibri">byte</span>数组则写为<span style="font-family:Calibri">[B</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;</span><span style="font-size:14px; font-family:Calibri">I</span><span style="font-size:14px; font-family:宋体">f(method1==0){</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">LOGI(</span><span style="font-size:14px; font-family:Calibri">“</span><span style="font-size:14px; font-family:宋体">find&nbsp;method1&nbsp;error</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:27px">
+<span style="font-size:14px; font-family:Calibri">R</span><span style="font-size:14px; font-family:宋体">eturn;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">}</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">env-&gt;CallVoidMethod(obj,method1);//Void表示返回类型为<span style="font-family:Calibri">void</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">//int&nbsp;result&nbsp;=&nbsp;env-&gt;CallVoidMethod(obj,method1,3,5);&nbsp;后面为参数</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">注：</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">1/返回类型定义</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体"><img src="http://static.oschina.net/uploads/space/2014/0804/205503_P8gx_262922.png" alt="" style="max-width:650px"></span><span style="font-family:宋体; font-size:14px">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">2/如果要调用类&#20284;【</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">hello</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">.getBytes(</span><span style="font-size:14px; font-family:Calibri">“</span><span style="font-size:14px; font-family:宋体">gb2312</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">);】则需要</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;&nbsp;env-&gt;CallVoidMethod(obj,</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">hello</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">,method1,</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">gb2312</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">);//</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">~</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">要先转换为<span style="font-family:Calibri">jstring</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">3/&nbsp;byteArray-&gt;char&nbsp;*</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;jsize&nbsp;len&nbsp;=&nbsp;env-&gt;GetArrayLength(byteArray);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;jbyte*&nbsp;ba&nbsp;=&nbsp;env-&gt;GetByteArrayElements(byteArray,JNI_FALSE);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;if(len&gt;0){</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">char&nbsp;*&nbsp;rtn&nbsp;=&nbsp;(char&nbsp;*)malloc(len&#43;1);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;&nbsp;</span>&nbsp;<span style="font-size:14px; font-family:宋体">memcpy(rtn,ba,len);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:14px">
+<span style="font-size:14px; font-family:宋体">rth[len]=0;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">}</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">env-&gt;ReleaseByteArrayElements(byteArray,ba,0);//释放掉内存空间</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">return&nbsp;rtn;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">4/获取<span style="font-family:Calibri">java</span>对象的<span style="font-family:Calibri">ID</span>为<span style="font-family:Calibri">:</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:21px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">jfieldID&nbsp;field_a=env-&gt;GetFieldID(dpclazz,</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">a</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">,</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">I</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:21px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">int&nbsp;ma=(int)env-&gt;GetObjectField(obj,field_a);//调用以获得&#20540;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:14px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:宋体">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:49px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Wingdings">&amp;Oslash;&nbsp;</span><span style="font-size:14px; font-family:宋体">静态方法调用：</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:49px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">获取非静态方法的<span style="font-family:Calibri">ID</span>：</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:49px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:21px">
+<span style="font-size:14px; font-family:宋体">jmethod&nbsp;methodID&nbsp;=&nbsp;env-&gt;GetStaticMethodID(dpclazz,</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">getNum</span><span style="font-size:14px; font-family:Calibri">”</span><span style="font-size:14px; font-family:宋体">,(参数<span style="font-family:Calibri">)V);&nbsp;&nbsp;</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:49px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">调用静态方法：</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:49px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:21px">
+<span style="font-size:14px; font-family:宋体">env-&gt;CallStaticVoidMethod(dpclazz,mthodID,参数<span style="font-family:Calibri">)</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:49px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:21px">
+<span style="font-size:14px; font-family:宋体">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:49px">
+<span style="font-size:14px; font-family:宋体">熟记：<span style="font-family:Calibri">get&nbsp;</span>参数&nbsp;<span style="font-family:Calibri">clazz&nbsp;&nbsp;&nbsp;</span></span><span style="font-size:14px; font-family:Calibri">c</span><span style="font-size:14px; font-family:宋体">all参数&nbsp;<span style="font-family:Calibri">obj,methodID&nbsp;</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是<span style="font-family:Calibri">static</span>的话，<span style="font-family:Calibri">call</span>前面<span style="font-family:Calibri">obj</span>改为<span style="font-family:Calibri">clazz</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">6、全局变量</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;</span>&nbsp;<span style="font-size:14px; font-family:Calibri">J</span><span style="font-size:14px; font-family:宋体">object的子类别包括<span style="font-family:Calibri">jclass</span>、<span style="font-family:Calibri">jstring,</span>、<span style="font-family:Calibri">jarray(</span>这些类称为局部性的对象参考<span style="font-family:Calibri">)</span>，他们就算定义成<span style="font-family:Calibri">static</span>，也要利用函数：</span></p>
+<p style="margin-top:5px; margin-bottom:10px; margin-left:28px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:28px">
+<span style="font-size:14px; font-family:Calibri">gObj&nbsp;=&nbsp;env-&gt;NewGlobalRef(obj);</span><span style="font-size:14px; font-family:宋体">将其赋&#20540;从而保持全局性</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">7、<span style="font-family:Calibri">JNI</span>线程模式的调用</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体"><img src="http://static.oschina.net/uploads/space/2014/0804/205545_himM_262922.png" alt="" style="max-width:650px">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">8、利用<span style="font-family:Calibri">C&#43;&#43;</span>回调来更新<span style="font-family:Calibri">UI(Handler)</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体"><img src="http://static.oschina.net/uploads/space/2014/0804/205555_LkmF_262922.png" alt="" style="max-width:650px">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:宋体">&nbsp;同步锁：<span style="font-family:Calibri">(java</span>调用<span style="font-family:Calibri">c&#43;&#43;)</span></span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:7px">
+<span style="font-size:14px; font-family:宋体">1、定义的时候：</span><span style="font-size:14px; font-family:Times-Roman">private&nbsp;native</span><span style="font-size:14px; font-family:Calibri">&nbsp;synchronized&nbsp;String&nbsp;execute(Object&nbsp;oSync);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:7px">
+<span style="font-size:14px; font-family:宋体">进入函数资源调用时：</span><span style="font-size:14px; font-family:Calibri">env-&gt;MonitorEnter(syncObj);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:7px">
+<span style="font-size:14px; font-family:宋体">释放时</span><span style="font-size:14px; font-family:宋体">：</span><span style="font-size:14px; font-family:Calibri">env-&gt;MonitorExit(syncObj);</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:7px">
+<span style="font-size:14px; font-family:宋体">上面讲的是不同线程情况下将对象传入<span style="font-family:Calibri">C&#43;&#43;</span>程序，所以还是与线程安全有关</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:7px">
+<span style="font-size:14px; font-family:宋体">如果是在<span style="font-family:Calibri">c&#43;&#43;</span>程序中的多线程，也一样。</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:7px">
+<span style="font-size:14px; font-family:宋体">多线程注意：</span></p>
+<p style="margin-top:0px; margin-bottom:0px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Times-Roman">if&nbsp;(0&nbsp;==&nbsp;gVm-&gt;AttachCurrentThread(&amp;env,&nbsp;NULL))</span></p>
+<p style="margin-top:0px; margin-bottom:0px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Times-Roman">{</span></p>
+<p style="margin-top:0px; margin-bottom:0px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Times-Roman">gVm-&gt;DetachCurrentThread();</span></p>
+<p style="margin-top:0px; margin-bottom:0px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Times-Roman">……</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:7px">
+<span style="font-size:14px; font-family:Times-Roman">}</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px; text-indent:7px">
+<span style="font-size:14px; font-family:Calibri"><img src="http://static.oschina.net/uploads/space/2014/0804/205606_vX7G_262922.png" alt="" style="max-width:650px">&nbsp;</span></p>
+<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
+<span style="font-size:14px; font-family:Calibri">&nbsp;</span></p><p>&nbsp;</p><p>原文：<a href="http://blog.csdn.net/gugugujiawei/article/details/41355509" target="_blank" rel="external">http://blog.csdn.net/gugugujiawei/article/details/41355509</a></p>
+<p><a href="_index.htm">&lt;&lt;目录</a></p>
+</body>
+</html>
