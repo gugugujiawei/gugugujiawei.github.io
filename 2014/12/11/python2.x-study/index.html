@@ -4,24 +4,22 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>myphoto | enjoyhot</title>
+    <title>python2.x学习小记 | enjoyhot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="enjoyhot">
     
 
     
-    <meta name="description" content="study,life,tech">
+    <meta name="description" content="不定时更新，不一定适合3.X，但一定适合2.7。一、Python中的装饰器‘’’pythondef main():    def decoratorwithparams(arg_of_decorator):        print arg_of_decorator        print ‘1’        def newDecorator(func):            print ‘">
 <meta property="og:type" content="article">
-<meta property="og:title" content="myphoto">
-<meta property="og:url" content="http://www.enjoyhot.top/2015/03/26/myphoto/index.html">
+<meta property="og:title" content="python2.x学习小记">
+<meta property="og:url" content="http://www.enjoyhot.top/2014/12/11/python2.x-study/index.html">
 <meta property="og:site_name" content="enjoyhot">
-<meta property="og:description" content="study,life,tech">
-<meta property="og:image" content="https://enjoyhot.github.io/img/arcticle_pic/201501/012001.jpg">
-<meta property="og:image" content="https://enjoyhot.github.io/img/arcticle_pic/201501/012001.jpg">
+<meta property="og:description" content="不定时更新，不一定适合3.X，但一定适合2.7。一、Python中的装饰器‘’’pythondef main():    def decoratorwithparams(arg_of_decorator):        print arg_of_decorator        print ‘1’        def newDecorator(func):            print ‘">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="myphoto">
-<meta name="twitter:description" content="study,life,tech">
+<meta name="twitter:title" content="python2.x学习小记">
+<meta name="twitter:description" content="不定时更新，不一定适合3.X，但一定适合2.7。一、Python中的装饰器‘’’pythondef main():    def decoratorwithparams(arg_of_decorator):        print arg_of_decorator        print ‘1’        def newDecorator(func):            print ‘">
 <link rel="publisher" href="111736291216286617217">
 
     
@@ -74,36 +72,20 @@
 </div>
     </header>
     <div id="container">
-      <div id="main" class="photo" itemscope itemprop="blogPost">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      
-        <img src="https://enjoyhot.github.io/img/arcticle_pic/201501/012001.jpg">
-      
-        <img src="https://enjoyhot.github.io/img/arcticle_pic/201501/012001.jpg">
-      
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
+      <div id="main" class="post" itemscope itemprop="blogPost">
   
 	<article itemprop="articleBody"> 
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/03/26/myphoto/" title="myphoto" itemprop="url">myphoto</a>
+      <a href="/2014/12/11/python2.x-study/" title="python2.x学习小记" itemprop="url">python2.x学习小记</a>
   </h1>
   <p class="article-author">By
        
 		<a href="https://plus.google.com/111736291216286617217?rel=author" title="enjoyhot" target="_blank" itemprop="author">enjoyhot</a>
 		
   <p class="article-time">
-    <time datetime="2015-03-26T15:45:21.000Z" itemprop="datePublished"> 发表于 2015-03-26</time>
+    <time datetime="2014-12-11T12:14:00.000Z" itemprop="datePublished"> 发表于 2014-12-11</time>
     
   </p>
 </header>
@@ -112,24 +94,32 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#不定时更新，不一定适合3-X，但一定适合2-7。"><span class="toc-number">1.</span> <span class="toc-text">不定时更新，不一定适合3.X，但一定适合2.7。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一、Python中的装饰器"><span class="toc-number"></span> <span class="toc-text">一、Python中的装饰器</span></a>
 		
 		</div>
 		
-		  
+		<h3 id="不定时更新，不一定适合3-X，但一定适合2-7。">不定时更新，不一定适合3.X，但一定适合2.7。</h3><h1 id="一、Python中的装饰器">一、Python中的装饰器</h1><p>‘’’python<br>def main():<br>    def decorator<em>with<em>params(arg_of_decorator):<br>        print arg_of_decorator<br>        print ‘1’<br>        def newDecorator(func):<br>            print ‘3’<br>            print func.__name</em></em><br>            return func(1,2)<br>        print ‘2’<br>        return newDecorator</p>
+<pre><code><span class="decorator">@decorator_with_params("deco_args")</span>
+<span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(a,b)</span>:</span>
+    <span class="keyword">print</span> <span class="string">'foo('</span>+str(a)+<span class="string">','</span>+ str(b)+<span class="string">') is called'</span>
+</code></pre><p>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    main()</p>
+<p>‘’’</p>
+<p>输出结果：</p>
+<p>‘’’python<br>deco_args<br>1<br>2<br>3<br>foo<br>foo(1,2) is called<br>‘’’ </p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/photo/">photo</a>
+  <a class="article-category-link" href="/categories/python/">python</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/photo/">photo</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -138,7 +128,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.enjoyhot.top/2015/03/26/myphoto/" data-title="myphoto | enjoyhot" data-tsina="2428685001" class="share clearfix">
+	  <div data-url="http://www.enjoyhot.top/2014/12/11/python2.x-study/" data-title="python2.x学习小记 | enjoyhot" data-tsina="2428685001" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -151,20 +141,20 @@
 	
 <nav class="article-nav clearfix">
  
-
-<div class="next">
-<a href="/2015/03/24/HPC-cluster/"  title="HPC集群平台搭建概念">
- <strong>下一篇：</strong><br/> 
- <span>HPC集群平台搭建概念
-</span>
+ <div class="prev" >
+ <a href="/2014/12/27/postgraduate-exam/" title="考研日">
+  <strong>上一篇：</strong><br/>
+  <span>
+  考研日</span>
 </a>
 </div>
+
 
 </nav>
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/03/26/myphoto/" data-title="myphoto" data-url="http://www.enjoyhot.top/2015/03/26/myphoto/"></div>
+	<div class="ds-thread" data-thread-key="2014/12/11/python2.x-study/" data-title="python2.x学习小记" data-url="http://www.enjoyhot.top/2014/12/11/python2.x-study/"></div>
 </section>
 
 
@@ -174,7 +164,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#不定时更新，不一定适合3-X，但一定适合2-7。"><span class="toc-number">1.</span> <span class="toc-text">不定时更新，不一定适合3.X，但一定适合2.7。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一、Python中的装饰器"><span class="toc-number"></span> <span class="toc-text">一、Python中的装饰器</span></a>
  
   </div>
 

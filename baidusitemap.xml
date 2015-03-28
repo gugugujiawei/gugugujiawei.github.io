@@ -3,65 +3,19 @@
 
     
   <url>
-    <loc>http://www.enjoyhot.top/2014/12/09/Djangoweb-release/</loc>
-    <lastmod>2015-03-27T12:42:06.000Z</lastmod>
+    <loc>http://www.enjoyhot.top/2014/12/11/python2.x-study/</loc>
+    <lastmod>2015-03-28T12:18:58.000Z</lastmod>
     <data>
         <display>
-        <title>ubuntu下发布Django Web的两种方法</title>
-        <pubTime>2014-12-09T12:23:50.000Z</pubTime>
+        <title>python2.x学习小记</title>
+        <pubTime>2014-12-11T12:14:00.000Z</pubTime>
         
-        <tag>Django </tag>
-         
         <tag>python </tag>
          
          
            
              
-              <breadCrumb title="Django" url="http://www.enjoyhot.top/categories/Django/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.enjoyhot.top/2014/11/21/Django-settup-2/</loc>
-    <lastmod>2015-03-27T09:13:23.000Z</lastmod>
-    <data>
-        <display>
-        <title>Django Web开发环境的搭建（二）</title>
-        <pubTime>2014-11-21T12:23:50.000Z</pubTime>
-        
-        <tag>Django </tag>
-         
-        <tag>python </tag>
-         
-         
-           
-             
-              <breadCrumb title="Django" url="http://www.enjoyhot.top/categories/Django/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.enjoyhot.top/2014/11/21/NDK-for-android/</loc>
-    <lastmod>2015-03-27T09:13:21.000Z</lastmod>
-    <data>
-        <display>
-        <title>androidNDK开发之JNI学习</title>
-        <pubTime>2014-11-21T12:23:50.000Z</pubTime>
-        
-        <tag>NDK </tag>
-         
-        <tag>android </tag>
-         
-         
-           
-             
-              <breadCrumb title="android" url="http://www.enjoyhot.top/categories/android/"/>
+              <breadCrumb title="python" url="http://www.enjoyhot.top/categories/python/"/>
           
         </display>
     </data>

@@ -397,29 +397,35 @@
 
    
     
-    <article class="post-expand false" itemprop="articleBody"> 
+    <article class="post-expand post" itemprop="articleBody"> 
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/12/09/Djangoweb-release/" title="ubuntu下发布Django Web的两种方法" itemprop="url">ubuntu下发布Django Web的两种方法</a>
+      <a href="/2014/12/11/python2.x-study/" title="python2.x学习小记" itemprop="url">python2.x学习小记</a>
   </h1>
   <p class="article-author">By
        
 		<a href="https://plus.google.com/111736291216286617217?rel=author" title="enjoyhot" target="_blank" itemprop="author">enjoyhot</a>
 		
   <p class="article-time">
-    <time datetime="2014-12-09T12:23:50.000Z" itemprop="datePublished"> 发表于 2014-12-09</time>
+    <time datetime="2014-12-11T12:14:00.000Z" itemprop="datePublished"> 发表于 2014-12-11</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        from my csdn
+        <h3 id="不定时更新，不一定适合3-X，但一定适合2-7。">不定时更新，不一定适合3.X，但一定适合2.7。</h3><h1 id="一、Python中的装饰器">一、Python中的装饰器</h1><p>‘’’python<br>def main():<br>    def decorator<em>with<em>params(arg_of_decorator):<br>        print arg_of_decorator<br>        print ‘1’<br>        def newDecorator(func):<br>            print ‘3’<br>            print func.__name</em></em><br>            return func(1,2)<br>        print ‘2’<br>        return newDecorator</p>
+<pre><code><span class="decorator">@decorator_with_params("deco_args")</span>
+<span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(a,b)</span>:</span>
+    <span class="keyword">print</span> <span class="string">'foo('</span>+str(a)+<span class="string">','</span>+ str(b)+<span class="string">') is called'</span>
+</code></pre><p>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    main()</p>
+<p>‘’’</p>
+<p>输出结果：</p>
+<p>‘’’python<br>deco_args<br>1<br>2<br>3<br>foo<br>foo(1,2) is called<br>‘’’ </p>
+
         
         
         <p class="article-more-link">
-          
-            <a href="/2014/12/09/Djangoweb-release/#more">Read More</a>
           
        </p>
     </div>
@@ -428,13 +434,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/Django/">Django</a>
+  <a class="article-category-link" href="/categories/python/">python</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Django/">Django</a><a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -445,164 +451,7 @@
 <div class="comments-count">
 	
 	  	<span></span>
-		<a href="/2014/12/09/Djangoweb-release/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/12/09/Djangoweb-release/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand false" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2014/11/21/Django-settup-2/" title="Django Web开发环境的搭建（二）" itemprop="url">Django Web开发环境的搭建（二）</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="https://plus.google.com/111736291216286617217?rel=author" title="enjoyhot" target="_blank" itemprop="author">enjoyhot</a>
-		
-  <p class="article-time">
-    <time datetime="2014-11-21T12:23:50.000Z" itemprop="datePublished"> 发表于 2014-11-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <!doctype html>
-<html dir="ltr" lang="zh-CN">
-<head>
-<title>Django Web开发环境的搭建（二）</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-body {font:normal 12px/24px Arial, Helvetica, sans-serif; background:#D9F0DB;}
-textarea,pre {font-family:Courier; font-size:12px;}
-</style>
-</head>
-<body>
-<p><a href='http://enjoyhot.top'>&lt;&lt;目录</a></p><p>本博文根据python2.7.3、Django1.7.1，运行环境为linux Ubuntu12.04，当然开始学习django是在win7 python2.7.8 Django1.7下搭建，后来发现在linux下开发可以省去一些default设置的修改，就转战linux学习。该博文针对win7，这一篇开始将细讲linux环境下开发</p>
-<p></p>
-<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
-linux下django开发环境的搭建和windows下环境搭建类&#20284;，在命令下有一点出入，例如templates文件夹在win7下是得放在工程目录下（不太记得了），而linux得放在app目录下。二话不说，上图比说的更有说服力。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2014/11/21/Django-settup-2/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Django/">Django</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Django/">Django</a><a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2014/11/21/Django-settup-2/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/11/21/Django-settup-2/" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand false" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2014/11/21/NDK-for-android/" title="androidNDK开发之JNI学习" itemprop="url">androidNDK开发之JNI学习</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="https://plus.google.com/111736291216286617217?rel=author" title="enjoyhot" target="_blank" itemprop="author">enjoyhot</a>
-		
-  <p class="article-time">
-    <time datetime="2014-11-21T12:23:50.000Z" itemprop="datePublished"> 发表于 2014-11-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <!doctype html>
-<html dir="ltr" lang="zh-CN">
-<p>本篇论文原来自于OSChina，图床效果可能表现得不是很好</p>
-<head>
-<title>androidNDK开发之JNI学习</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-body {font:normal 12px/24px Arial, Helvetica, sans-serif; background:#D9F0DB;}
-textarea,pre {font-family:Courier; font-size:12px;}
-</style>
-</head>
-<body>
-<p><a href='http://enjoyhot.top'>&lt;&lt;目录</a></p><p>androidNDK开发之JNI学习</p>
-<p></p>
-<p style="margin-top:5px; margin-bottom:10px; line-height:23px; font-family:微软雅黑,Verdana,sans-serif,宋体; font-size:13px">
-<span style="font-size:14px; font-family:宋体">1、在工程目录下编译</span></p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2014/11/21/NDK-for-android/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/NDK/">NDK</a><a href="/tags/android/">android</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2014/11/21/NDK-for-android/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/11/21/NDK-for-android/" data-count-type="comments">&nbsp;</a>
+		<a href="/2014/12/11/python2.x-study/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/12/11/python2.x-study/" data-count-type="comments">&nbsp;</a>
 	
 </div>
 
@@ -636,15 +485,9 @@ textarea,pre {font-family:Courier; font-size:12px;}
 		<ul>
 		
 		  
-			<li><a href="/categories/Django/" title="Django">Django<sup>2</sup></a></li>
-		  
 		
 		  
 			<li><a href="/categories/HPC/" title="HPC">HPC<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/android/" title="android">android<sup>1</sup></a></li>
 		  
 		
 		  
@@ -655,6 +498,10 @@ textarea,pre {font-family:Courier; font-size:12px;}
 			<li><a href="/categories/photo/" title="photo">photo<sup>1</sup></a></li>
 		  
 		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
 		</ul>
 </div>
 
@@ -662,7 +509,7 @@ textarea,pre {font-family:Courier; font-size:12px;}
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">归档</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">3</span></li></ul>
   </div>
 
 
@@ -695,7 +542,7 @@ textarea,pre {font-family:Courier; font-size:12px;}
   <div class="tagcloudlist">
     <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/Django/" style="font-size: 20px;">Django</a><a href="/tags/HPC/" style="font-size: 10px;">HPC</a><a href="/tags/NDK/" style="font-size: 10px;">NDK</a><a href="/tags/android/" style="font-size: 10px;">android</a><a href="/tags/cluster/" style="font-size: 10px;">cluster</a><a href="/tags/life/" style="font-size: 20px;">life</a><a href="/tags/photo/" style="font-size: 10px;">photo</a><a href="/tags/python/" style="font-size: 20px;">python</a><a href="/tags/实验室/" style="font-size: 10px;">实验室</a><a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a>
+       <a href="/tags/HPC/" style="font-size: 10px;">HPC</a><a href="/tags/cluster/" style="font-size: 10px;">cluster</a><a href="/tags/life/" style="font-size: 20px;">life</a><a href="/tags/photo/" style="font-size: 10px;">photo</a><a href="/tags/python/" style="font-size: 10px;">python</a><a href="/tags/实验室/" style="font-size: 10px;">实验室</a><a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a>
     </div>
   </div>
 
