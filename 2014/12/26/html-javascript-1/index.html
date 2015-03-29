@@ -1,0 +1,597 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>html与javascript之网络篇 | enjoyhot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="enjoyhot">
+    
+
+    
+    <meta name="description" content="此篇依然与前一篇动态篇环境一样，基于jquery
+一、表单提交（post的同步加载）  12345678 &amp;lt;form method=&quot;post&quot; onSubmit=&quot;return check_recover()&quot;&amp;gt;;	                          						    &amp;lt;a href=&quot;javascript:void(0)&quot; id=&quot;allSelect2&quot; &amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="html与javascript之网络篇">
+<meta property="og:url" content="http://www.enjoyhot.top/2014/12/26/html-javascript-1/index.html">
+<meta property="og:site_name" content="enjoyhot">
+<meta property="og:description" content="此篇依然与前一篇动态篇环境一样，基于jquery
+一、表单提交（post的同步加载）  12345678 &amp;lt;form method=&quot;post&quot; onSubmit=&quot;return check_recover()&quot;&amp;gt;;	                          						    &amp;lt;a href=&quot;javascript:void(0)&quot; id=&quot;allSelect2&quot; &amp;">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="html与javascript之网络篇">
+<meta name="twitter:description" content="此篇依然与前一篇动态篇环境一样，基于jquery
+一、表单提交（post的同步加载）  12345678 &amp;lt;form method=&quot;post&quot; onSubmit=&quot;return check_recover()&quot;&amp;gt;;	                          						    &amp;lt;a href=&quot;javascript:void(0)&quot; id=&quot;allSelect2&quot; &amp;">
+<link rel="publisher" href="111736291216286617217">
+
+    
+    <link rel="alternative" href="/atom.xml" title="enjoyhot" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="enjoyhot" title="enjoyhot"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="enjoyhot">enjoyhot</a></h1>
+				<h2 class="blog-motto">All things come to those who wait.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home|主页</a></li>
+					
+						<li><a href="/archives">Archives|归档</a></li>
+					
+						<li><a href="/about">About|关于</a></li>
+					
+					<li>
+ 					
+						<form class="search" action="http://deepso.enjoyhot.top/" target="_blank">
+							<label>Search</label>
+						<input name="s" type="hidden" value= 12369960100802390000 ><input type="text" name="q" size="30" placeholder="搜索"><br>
+						</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/12/26/html-javascript-1/" title="html与javascript之网络篇" itemprop="url">html与javascript之网络篇</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/111736291216286617217?rel=author" title="enjoyhot" target="_blank" itemprop="author">enjoyhot</a>
+		
+  <p class="article-time">
+    <time datetime="2014-12-26T06:09:00.000Z" itemprop="datePublished"> 发表于 2014-12-26</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、表单提交（post的同步加载）"><span class="toc-number">1.</span> <span class="toc-text">一、表单提交（post的同步加载）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、ajax异步加载"><span class="toc-number">2.</span> <span class="toc-text">二、ajax异步加载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三、刷新当前页面"><span class="toc-number">3.</span> <span class="toc-text">三、刷新当前页面</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四、定时执行某些特定操作，譬如更新图"><span class="toc-number">4.</span> <span class="toc-text">四、定时执行某些特定操作，譬如更新图</span></a></li></ol>
+		
+		</div>
+		
+		<p>   此篇依然与前一篇动态篇环境一样，基于jquery</p>
+<h1 id="一、表单提交（post的同步加载）">一、表单提交（post的同步加载）</h1>  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> &lt;form method="post" onSubmit="return check_recover()"&gt;;	                          						</span><br><span class="line">    &lt;a href="javascript:void(0)" id="allSelect2" &gt;;全部&lt;/a&gt;;</span><br><span class="line">    &lt;a &gt;;-&lt;/a&gt;;                        </span><br><span class="line">    &lt;a href="javascript:void(0)" id="noneSelect2" &gt;;无&lt;/a&gt;;</span><br><span class="line">    &lt;a &gt;;-&lt;/a&gt;;                        </span><br><span class="line">    &lt;input type="submit" class="btn btn-primary" name="recover" value="恢复所选"&gt;;&lt;/input&gt;;           </span><br><span class="line">    &lt;button type="button" class="btn btn-primary"&gt;;删除所选&lt;/button&gt;;</span><br><span class="line">&lt;/form&gt;;</span><br></pre></td></tr></table></figure>
+<a id="more"></a> 
+<p> 解释：当点击submit对应的按钮时，会直接提交到服务器，当此前为调用check_recover()函数，在这个函数中可以判断提交的内容是否合法，如果是则return true，则完成表单提交，实现同步加载。</p>
+<h1 id="二、ajax异步加载">二、ajax异步加载</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">post_message1</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="comment">//alert('success')</span></span><br><span class="line">data=&#123;<span class="string">'type'</span>:<span class="string">"2"</span>,<span class="string">'ip'</span>:<span class="string">'127.0.0.1'</span>&#125;;</span><br><span class="line">$.post($(<span class="keyword">this</span>).attr(<span class="string">'action'</span>), data, <span class="function"><span class="keyword">function</span><span class="params">(data,status,xhr)</span></span>&#123;		</span><br><span class="line"><span class="keyword">if</span>(status==<span class="string">"success"</span>)&#123;</span><br><span class="line">change();</span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">post_message2</span><span class="params">()</span></span>&#123;</span><br><span class="line">$.getJSON(<span class="string">"yoururl"</span>,<span class="function"><span class="keyword">function</span><span class="params">(data)</span></span>&#123;</span><br><span class="line">dosomething();</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong> 解释：</strong></p>
+<p>  1.当调用post_message()函数时，发送data数据到服务器，当成功返回时，再调用change()函数。</p>
+<p>  2.当调用post_message()函数时，访问url为yoururl的链接，返回含有data数据的response，然后调用dosomething()函数。</p>
+<h1 id="三、刷新当前页面">三、刷新当前页面</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.location.reload();</span><br></pre></td></tr></table></figure>
+<h1 id="四、定时执行某些特定操作，譬如更新图">四、定时执行某些特定操作，譬如更新图</h1>   <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;		</span><br><span class="line">	<span class="built_in">window</span>.setInterval(<span class="string">'hostusage()'</span>, <span class="number">2000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 解释：两秒调用hostusage()函数一次</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/前端/">前端</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.enjoyhot.top/2014/12/26/html-javascript-1/" data-title="html与javascript之网络篇 | enjoyhot" data-tsina="2428685001" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/12/27/postgraduate-exam/" title="考研日">
+  <strong>上一篇：</strong><br/>
+  <span>
+  考研日</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/12/26/html-javascript-2/"  title="html与javascript之动态篇        ">
+ <strong>下一篇：</strong><br/> 
+ <span>html与javascript之动态篇        
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2014/12/26/html-javascript-1/" data-title="html与javascript之网络篇" data-url="http://www.enjoyhot.top/2014/12/26/html-javascript-1/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、表单提交（post的同步加载）"><span class="toc-number">1.</span> <span class="toc-text">一、表单提交（post的同步加载）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、ajax异步加载"><span class="toc-number">2.</span> <span class="toc-text">二、ajax异步加载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三、刷新当前页面"><span class="toc-number">3.</span> <span class="toc-text">三、刷新当前页面</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四、定时执行某些特定操作，譬如更新图"><span class="toc-number">4.</span> <span class="toc-text">四、定时执行某些特定操作，譬如更新图</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2428685001&verifier=553ef0af&dpc=1"></iframe>
+</div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/HPC/" title="HPC">HPC<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Machine-Learning/" title="Machine Learning">Machine Learning<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>6</sup></a></li>
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/database/" title="database">database<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/django/" title="django">django<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/life/" title="life">life<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/photo/" title="photo">photo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/前端/" title="前端">前端<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/茶语/" title="茶语">茶语<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">9</span></li></ul>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/gugugujiawei" target="_blank" title="enjoyhot&#39;s CSDN">enjoyhot&#39;s CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.enjoyhot.top" target="_blank" title="其他域名">其他域名</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/HPC/" style="font-size: 12.5px;">HPC</a><a href="/tags/Machine-Learning/" style="font-size: 15px;">Machine Learning</a><a href="/tags/android/" style="font-size: 20px;">android</a><a href="/tags/cluster/" style="font-size: 10px;">cluster</a><a href="/tags/django/" style="font-size: 10px;">django</a><a href="/tags/html/" style="font-size: 10px;">html</a><a href="/tags/javascript/" style="font-size: 10px;">javascript</a><a href="/tags/life/" style="font-size: 12.5px;">life</a><a href="/tags/linux/" style="font-size: 15px;">linux</a><a href="/tags/listview/" style="font-size: 10px;">listview</a><a href="/tags/markdown/" style="font-size: 10px;">markdown</a><a href="/tags/mongoengine/" style="font-size: 10px;">mongoengine</a><a href="/tags/ndk/" style="font-size: 12.5px;">ndk</a><a href="/tags/photo/" style="font-size: 10px;">photo</a><a href="/tags/pymongo/" style="font-size: 10px;">pymongo</a><a href="/tags/python/" style="font-size: 17.5px;">python</a><a href="/tags/scrapy/" style="font-size: 10px;">scrapy</a><a href="/tags/前端/" style="font-size: 10px;">前端</a><a href="/tags/实验室/" style="font-size: 10px;">实验室</a><a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a><a href="/tags/生活/" style="font-size: 10px;">生活</a><a href="/tags/茶语/" style="font-size: 10px;">茶语</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+
+
+<br>
+<!-- 打赏表单 -->
+<form id="donate" action="https://shenghuo.alipay.com/send/payment/fill.htm" 
+	method="POST" target="_blank" accept-charset="GBK" style="display: none;">
+	<input name="optEmail" type="hidden" value="13570236302" />
+	<input name="payAmount" type="hidden" value="1" />
+	<input id="title" name="title" type="hidden" value="默认显示的付款说明" />
+	<input name="memo" type="hidden" value="备注" />
+</form>
+<!-- /打赏表单 -->
+
+<!-- 打赏按钮的样式表 -->
+<style type="text/css">
+	.donate_bar{ text-align: center; }
+	.donate_bar a.btn_donate{
+		display: inline-block;
+		width: 82px;
+		height: 82px;
+		background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+		_background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+	}
+	.donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+	.donate_bar .donate_txt {
+		display: block;
+		color: #9d9d9d;
+		font: 14px/2 "Microsoft Yahei";
+	}
+</style>
+<!-- /打赏按钮的样式表 -->
+
+<!-- 打赏按钮 -->
+<div class="donate_bar">
+	<a class="btn_donate" href="javascript:;" title="Donate 打赏" 
+		onclick="document.getElementById('donate').submit()"></a>
+	<span class="donate_txt">
+		&uarr;<br/>
+		If you enjoy the blog,
+		please feel free to donate~
+		Thx for your support.
+	</span>
+	<span class="donate_txt">
+		若本文对您有帮助，求打赏~ 谢谢您的支持和鼓励。
+	</span>
+</div>
+<!-- /打赏按钮 -->
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jiawei Gu in CCNL,SCUT. <br/>
+			Here shares some of my work about tech,life and study.Welcome to communicate and discuss together.^_^</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2428685001" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/enjoyhot" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		<a href="https://www.linkedin.com/in/gugugujiawei" target="_blank" class="icon-linkedin" title="linkedin"></a>
+		
+		
+		
+		<a href="https://www.zhihu.com/people/enjoyhot" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		<a href="https://plus.google.com/111736291216286617217?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:gugugujiawei@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://www.enjoyhot.top/about" target="_blank" title="enjoyhot">enjoyhot</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+  
+    c.click();
+    
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"enjoyhot"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F715efc417137bb8b58f6b4edfa378ccd' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254644815'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254644815' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+
+  </body>
+</html>

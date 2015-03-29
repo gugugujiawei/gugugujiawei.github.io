@@ -1,0 +1,617 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>【machine learning】KNN算法         | enjoyhot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="enjoyhot">
+    
+
+    
+    <meta name="description" content="适逢学习机器学习基础知识，就将书中内容读读记记，本博文代码参考书本Machine Learning in Action（《机器学习实战》）。
+一、概述kNN算法又称为k近邻分类(k-nearest neighbor classification)算法。
+kNN算法则是从训练集中找到和新数据最接近的k条记录，然后根据他们的主要分类来决定新数据的类别。该算法涉及3个主要因素：训练集、距离或相似的衡量、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【machine learning】KNN算法        ">
+<meta property="og:url" content="http://www.enjoyhot.top/2015/02/25/machinelearning-KNN/index.html">
+<meta property="og:site_name" content="enjoyhot">
+<meta property="og:description" content="适逢学习机器学习基础知识，就将书中内容读读记记，本博文代码参考书本Machine Learning in Action（《机器学习实战》）。
+一、概述kNN算法又称为k近邻分类(k-nearest neighbor classification)算法。
+kNN算法则是从训练集中找到和新数据最接近的k条记录，然后根据他们的主要分类来决定新数据的类别。该算法涉及3个主要因素：训练集、距离或相似的衡量、">
+<meta property="og:image" content="http://img.blog.csdn.net/20150225162324294?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20150225165135118?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【machine learning】KNN算法        ">
+<meta name="twitter:description" content="适逢学习机器学习基础知识，就将书中内容读读记记，本博文代码参考书本Machine Learning in Action（《机器学习实战》）。
+一、概述kNN算法又称为k近邻分类(k-nearest neighbor classification)算法。
+kNN算法则是从训练集中找到和新数据最接近的k条记录，然后根据他们的主要分类来决定新数据的类别。该算法涉及3个主要因素：训练集、距离或相似的衡量、">
+<link rel="publisher" href="111736291216286617217">
+
+    
+    <link rel="alternative" href="/atom.xml" title="enjoyhot" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="enjoyhot" title="enjoyhot"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="enjoyhot">enjoyhot</a></h1>
+				<h2 class="blog-motto">All things come to those who wait.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home|主页</a></li>
+					
+						<li><a href="/archives">Archives|归档</a></li>
+					
+						<li><a href="/about">About|关于</a></li>
+					
+					<li>
+ 					
+						<form class="search" action="http://deepso.enjoyhot.top/" target="_blank">
+							<label>Search</label>
+						<input name="s" type="hidden" value= 12369960100802390000 ><input type="text" name="q" size="30" placeholder="搜索"><br>
+						</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/02/25/machinelearning-KNN/" title="【machine learning】KNN算法        " itemprop="url">【machine learning】KNN算法        </a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/111736291216286617217?rel=author" title="enjoyhot" target="_blank" itemprop="author">enjoyhot</a>
+		
+  <p class="article-time">
+    <time datetime="2015-02-25T08:04:00.000Z" itemprop="datePublished"> 发表于 2015-02-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、概述"><span class="toc-number">1.</span> <span class="toc-text">一、概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、算法要点"><span class="toc-number">2.</span> <span class="toc-text">二、算法要点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三、优缺点"><span class="toc-number">3.</span> <span class="toc-text">三、优缺点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四、利用KNN进行手写识别"><span class="toc-number">4.</span> <span class="toc-text">四、利用KNN进行手写识别</span></a></li></ol>
+		
+		</div>
+		
+		<p>适逢学习机器学习基础知识，就将书中内容读读记记，本博文代码参考书本Machine Learning in Action（《机器学习实战》）。</p>
+<h1 id="一、概述">一、概述</h1><p>kNN算法又称为k近邻分类(k-nearest neighbor classification)算法。</p>
+<p>kNN算法则是从训练集中找到和新数据最接近的k条记录，然后根据他们的主要分类来决定新数据的类别。该算法涉及3个主要因素：训练集、距离或相似的衡量、k的大小。<br><a id="more"></a></p>
+<h1 id="二、算法要点">二、算法要点</h1><p><strong>1、指导思想</strong><br>kNN算法的指导思想是“近朱者赤，近墨者黑”，由你的邻居来推断出你的类别。</p>
+<p>计算步骤如下：<br>1）算距离：给定测试对象，计算它与训练集中的每个对象的距离<br>2）找邻居：圈定距离最近的k个训练对象，作为测试对象的近邻<br>3）做分类：根据这k个近邻归属的主要类别，来对测试对象分类</p>
+<p><strong>2、距离或相似度的衡量</strong><br>什么是合适的距离衡量？距离越近应该意味着这两个点属于一个分类的可能性越大。<br>距离衡量包括欧式距离、夹角余弦等。<br>对于文本分类来说，使用余弦(cosine)来计算相似度就比欧式(Euclidean)距离更合适。</p>
+<p><strong>3、类别的判定</strong><br>投票决定：少数服从多数，近邻中哪个类别的点最多就分为该类，属于以频率为标准。<br>加权投票法：根据距离的远近，对近邻的投票进行加权，距离越近则权重越大（权重为距离平方的倒数），属于以量化为标准。</p>
+<h1 id="三、优缺点">三、优缺点</h1><p><strong>1、优点</strong><br>简单，易于理解，易于实现，无需估计参数，无需训练<br>适合对稀有事件进行分类（例如当流失率很低时，比如低于0.5%，构造流失预测模型）<br>特别适合于多分类问题(multi-modal,对象具有多个类别标签)，例如根据基因特征来判断其功能分类，kNN比SVM的表现要好</p>
+<p><strong>2、缺点</strong><br>懒惰算法，对测试样本分类时的计算量大，内存开销大，评分慢<br>可解释性较差，无法给出决策树那样的规则。</p>
+<h1 id="四、利用KNN进行手写识别">四、利用KNN进行手写识别</h1><p>假如存在训练数据，都是二值得灰度图，来源于手写面板的采集图像数据。如下表示数字‘0’，所在文件夹下包括表示0~9的文件，文件夹命名A_B.txt,A表示真实数字，B表示该数字的第B个样本（一般数据越多有有利于接近预测值）</p>
+<p>   <img src="http://img.blog.csdn.net/20150225162324294?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image_mark"></p>
+<p> 在另一个文件夹中，也存在同样命名的数据文件，用于检验有监督学习下的准确率，我们称为测试数据。<br>在代码中，我们需要三个函数</p>
+<blockquote>
+<p>def classify0(inX, dataSet, labels, k)——用于对输入单个样本inX进行分类，dataSet为训练数据，labels为训练数据的类别，K为近邻范围<br>def img2vector(filename)——将文件filename中的数据规格由32X32转换为1X1024的向量<br>def handwritingClassTest()——利用测试数据进行测试，得出错误率<br>我这里只用了0~9分别20个训练数据而已，提高速度。需要源代码可以到机器学习实战的配套代码中取<br>  <a href="http://vdisk.weibo.com/s/uEZesAafcjQgx?sudaref=www.baidu.com" target="_blank" rel="external">http://vdisk.weibo.com/s/uEZesAafcjQgx?sudaref=www.baidu.com</a></p>
+</blockquote>
+<p>代码中用到了numpy库，numpy库用在数据量大的计算较高效</p>
+<p><strong>numpy用法小抄：</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="prompt">&gt;&gt;&gt; </span>tile([<span class="number">0</span>, <span class="number">0</span>], (<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">array([[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]])</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>tile([<span class="number">0</span>, <span class="number">0</span>], (<span class="number">2</span>, <span class="number">1</span>))</span><br><span class="line">array([[<span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">0</span>, <span class="number">0</span>]])</span><br><span class="line">`</span><br></pre></td></tr></table></figure></p>
+<p>第一个是矩阵A<br>第二个参数是要 只有一个数字时，表示 对 A中元素重复的次数<br>两个参数时（x， y） y表示对A中元素重复的次数， x表示 对前面的操作执行x次。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="prompt">&gt;&gt;&gt; </span>b= np.arange(<span class="number">12</span>).reshape(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>b</span><br><span class="line">array([[ <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">           [ <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>],</span><br><span class="line">           [ <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>]])</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>b.sum(axis=<span class="number">0</span>) <span class="comment"># 计算每一列的和，注意理解轴的含义，参考数组的第一篇文章</span></span><br><span class="line">array([<span class="number">12</span>, <span class="number">15</span>, <span class="number">18</span>, <span class="number">21</span>])</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>b.min(axis=<span class="number">1</span>) <span class="comment"># 获取每一行的最小值</span></span><br><span class="line">array([<span class="number">0</span>, <span class="number">4</span>, <span class="number">8</span>])</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>b.cumsum(axis=<span class="number">1</span>) <span class="comment"># 计算每一行的累积和</span></span><br><span class="line">array([[ <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>],</span><br><span class="line">           [ <span class="number">4</span>, <span class="number">9</span>, <span class="number">15</span>, <span class="number">22</span>],</span><br><span class="line">           [ <span class="number">8</span>, <span class="number">17</span>, <span class="number">27</span>, <span class="number">38</span>]])</span><br></pre></td></tr></table></figure>
+<p>需要用到再另外写博客进行补充。<br>KNN.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> listdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">classify0</span><span class="params">(inX, dataSet, labels, k)</span>:</span></span><br><span class="line">    <span class="comment">#inX------[x,x,x,x]</span></span><br><span class="line">    <span class="comment">#dataSet------array([[x,x,x,x],[x,x,x,x]])</span></span><br><span class="line">    <span class="comment">#labels------[x,x]</span></span><br><span class="line">    <span class="comment">#k------n</span></span><br><span class="line">    dataSetSize = dataSet.shape[<span class="number">0</span>]</span><br><span class="line">    diffMat = tile(inX, (dataSetSize,<span class="number">1</span>)) - dataSet</span><br><span class="line">    sqDiffMat = diffMat**<span class="number">2</span></span><br><span class="line">    sqDistances = sqDiffMat.sum(axis=<span class="number">1</span>)</span><br><span class="line">    distances = sqDistances**<span class="number">0.5</span></span><br><span class="line">    sortedDistIndicies = distances.argsort()     </span><br><span class="line">    classCount=&#123;&#125;          </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">        voteIlabel = labels[sortedDistIndicies[i]]</span><br><span class="line">        classCount[voteIlabel] = classCount.get(voteIlabel,<span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment">#将字典按value值大小降序排序,结果为二维列表</span></span><br><span class="line">    sortedClassCount = sorted(classCount.iteritems(), key=operator.itemgetter(<span class="number">1</span>), reverse=<span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">return</span> sortedClassCount[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">img2vector</span><span class="params">(filename)</span>:</span></span><br><span class="line">    returnVect = zeros((<span class="number">1</span>,<span class="number">1024</span>))</span><br><span class="line">    fr = open(filename,<span class="string">'r'</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">32</span>):</span><br><span class="line">        lineStr = fr.readline()</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">32</span>):</span><br><span class="line">            returnVect[<span class="number">0</span>,<span class="number">32</span>*i+j] = int(lineStr[j])</span><br><span class="line">    <span class="keyword">return</span> returnVect</span><br><span class="line"></span><br><span class="line">trainFile = <span class="string">'F:\\python\\pyproject\\ML\\codes\\machinelearninginaction\\Ch02\\training20\\'</span></span><br><span class="line">testFile = <span class="string">'F:\\python\\pyproject\\ML\\codes\\machinelearninginaction\\Ch02\\testDigits\\'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handwritingClassTest</span><span class="params">()</span>:</span></span><br><span class="line">    hwLabels = []</span><br><span class="line">    trainingFileList = listdir(trainFile)           <span class="comment">#load the training set</span></span><br><span class="line">    m = len(trainingFileList)</span><br><span class="line">    trainingMat = zeros((m,<span class="number">1024</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(m):</span><br><span class="line">        fileNameStr = trainingFileList[i]</span><br><span class="line">        fileStr = fileNameStr.split(<span class="string">'.'</span>)[<span class="number">0</span>]     <span class="comment">#take off .txt</span></span><br><span class="line">        classNumStr = int(fileStr.split(<span class="string">'_'</span>)[<span class="number">0</span>])</span><br><span class="line">        hwLabels.append(classNumStr)</span><br><span class="line">        path = trainFile + <span class="string">'%s'</span></span><br><span class="line">        trainingMat[i,:] = img2vector(path % fileNameStr)</span><br><span class="line">    testFileList = listdir(testFile)        <span class="comment">#iterate through the test set</span></span><br><span class="line">    errorCount = <span class="number">0.0</span></span><br><span class="line">    mTest = len(testFileList)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(mTest):</span><br><span class="line">        fileNameStr = testFileList[i]</span><br><span class="line">        fileStr = fileNameStr.split(<span class="string">'.'</span>)[<span class="number">0</span>]     <span class="comment">#take off .txt</span></span><br><span class="line">        classNumStr = int(fileStr.split(<span class="string">'_'</span>)[<span class="number">0</span>])</span><br><span class="line">        path = testFile + <span class="string">'%s'</span></span><br><span class="line">        vectorUnderTest = img2vector(path % fileNameStr)</span><br><span class="line">        classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, <span class="number">3</span>)</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"the classifier came back with: %d, the real answer is: %d"</span> % (classifierResult, classNumStr)</span><br><span class="line">        <span class="keyword">if</span> (classifierResult != classNumStr): errorCount += <span class="number">1.0</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"\nthe total number of errors is: %d"</span> % errorCount</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"\nthe total error rate is: %f"</span> % (errorCount/float(mTest))</span><br></pre></td></tr></table></figure>
+<p> 再在test.py中调用KNN.handwritingClassTest()，则程序开始运行</p>
+<p>  test.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> KNN</span><br><span class="line">KNN.handwritingClassTest()</span><br></pre></td></tr></table></figure>
+<p> 可看到错误率10.68%，挺高的，增加训练数据量就应该会减小一些。</p>
+<p>  <img src="http://img.blog.csdn.net/20150225165135118?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image_mark"></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Machine-Learning/">Machine Learning</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Machine-Learning/">Machine Learning</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.enjoyhot.top/2015/02/25/machinelearning-KNN/" data-title="【machine learning】KNN算法         | enjoyhot" data-tsina="2428685001" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/03/19/study-thinking-20150319/" title="学习感悟">
+  <strong>上一篇：</strong><br/>
+  <span>
+  学习感悟</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/01/21/python-scrapy/"  title="网络爬虫框架scrapy介绍及应用——抓取新浪新闻的标题内容评论        ">
+ <strong>下一篇：</strong><br/> 
+ <span>网络爬虫框架scrapy介绍及应用——抓取新浪新闻的标题内容评论        
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/02/25/machinelearning-KNN/" data-title="【machine learning】KNN算法        " data-url="http://www.enjoyhot.top/2015/02/25/machinelearning-KNN/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、概述"><span class="toc-number">1.</span> <span class="toc-text">一、概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、算法要点"><span class="toc-number">2.</span> <span class="toc-text">二、算法要点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三、优缺点"><span class="toc-number">3.</span> <span class="toc-text">三、优缺点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四、利用KNN进行手写识别"><span class="toc-number">4.</span> <span class="toc-text">四、利用KNN进行手写识别</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2428685001&verifier=553ef0af&dpc=1"></iframe>
+</div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/HPC/" title="HPC">HPC<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Machine-Learning/" title="Machine Learning">Machine Learning<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>6</sup></a></li>
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/database/" title="database">database<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/django/" title="django">django<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/life/" title="life">life<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/photo/" title="photo">photo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/前端/" title="前端">前端<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/茶语/" title="茶语">茶语<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">9</span></li></ul>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/gugugujiawei" target="_blank" title="enjoyhot&#39;s CSDN">enjoyhot&#39;s CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.enjoyhot.top" target="_blank" title="其他域名">其他域名</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/HPC/" style="font-size: 12.5px;">HPC</a><a href="/tags/Machine-Learning/" style="font-size: 15px;">Machine Learning</a><a href="/tags/android/" style="font-size: 20px;">android</a><a href="/tags/cluster/" style="font-size: 10px;">cluster</a><a href="/tags/django/" style="font-size: 10px;">django</a><a href="/tags/html/" style="font-size: 10px;">html</a><a href="/tags/javascript/" style="font-size: 10px;">javascript</a><a href="/tags/life/" style="font-size: 12.5px;">life</a><a href="/tags/linux/" style="font-size: 15px;">linux</a><a href="/tags/listview/" style="font-size: 10px;">listview</a><a href="/tags/markdown/" style="font-size: 10px;">markdown</a><a href="/tags/mongoengine/" style="font-size: 10px;">mongoengine</a><a href="/tags/ndk/" style="font-size: 12.5px;">ndk</a><a href="/tags/photo/" style="font-size: 10px;">photo</a><a href="/tags/pymongo/" style="font-size: 10px;">pymongo</a><a href="/tags/python/" style="font-size: 17.5px;">python</a><a href="/tags/scrapy/" style="font-size: 10px;">scrapy</a><a href="/tags/前端/" style="font-size: 10px;">前端</a><a href="/tags/实验室/" style="font-size: 10px;">实验室</a><a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a><a href="/tags/生活/" style="font-size: 10px;">生活</a><a href="/tags/茶语/" style="font-size: 10px;">茶语</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+
+
+<br>
+<!-- 打赏表单 -->
+<form id="donate" action="https://shenghuo.alipay.com/send/payment/fill.htm" 
+	method="POST" target="_blank" accept-charset="GBK" style="display: none;">
+	<input name="optEmail" type="hidden" value="13570236302" />
+	<input name="payAmount" type="hidden" value="1" />
+	<input id="title" name="title" type="hidden" value="默认显示的付款说明" />
+	<input name="memo" type="hidden" value="备注" />
+</form>
+<!-- /打赏表单 -->
+
+<!-- 打赏按钮的样式表 -->
+<style type="text/css">
+	.donate_bar{ text-align: center; }
+	.donate_bar a.btn_donate{
+		display: inline-block;
+		width: 82px;
+		height: 82px;
+		background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+		_background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+	}
+	.donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+	.donate_bar .donate_txt {
+		display: block;
+		color: #9d9d9d;
+		font: 14px/2 "Microsoft Yahei";
+	}
+</style>
+<!-- /打赏按钮的样式表 -->
+
+<!-- 打赏按钮 -->
+<div class="donate_bar">
+	<a class="btn_donate" href="javascript:;" title="Donate 打赏" 
+		onclick="document.getElementById('donate').submit()"></a>
+	<span class="donate_txt">
+		&uarr;<br/>
+		If you enjoy the blog,
+		please feel free to donate~
+		Thx for your support.
+	</span>
+	<span class="donate_txt">
+		若本文对您有帮助，求打赏~ 谢谢您的支持和鼓励。
+	</span>
+</div>
+<!-- /打赏按钮 -->
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jiawei Gu in CCNL,SCUT. <br/>
+			Here shares some of my work about tech,life and study.Welcome to communicate and discuss together.^_^</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2428685001" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/enjoyhot" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		<a href="https://www.linkedin.com/in/gugugujiawei" target="_blank" class="icon-linkedin" title="linkedin"></a>
+		
+		
+		
+		<a href="https://www.zhihu.com/people/enjoyhot" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		<a href="https://plus.google.com/111736291216286617217?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:gugugujiawei@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://www.enjoyhot.top/about" target="_blank" title="enjoyhot">enjoyhot</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+  
+    c.click();
+    
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"enjoyhot"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F715efc417137bb8b58f6b4edfa378ccd' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254644815'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254644815' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+
+  </body>
+</html>

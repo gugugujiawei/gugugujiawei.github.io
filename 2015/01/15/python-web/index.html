@@ -1,0 +1,710 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>【python web学习】python web窥探         | enjoyhot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="enjoyhot">
+    
+
+    
+    <meta name="description" content="本文为参考网上一些博客翻译以及想法，自己写的一篇总结博文，可能有重复的地方，纯粹总结只用。阅读之前可参考:
+  1、How to write a web framework in Python（作者anandology是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【python web学习】python web窥探        ">
+<meta property="og:url" content="http://www.enjoyhot.top/2015/01/15/python-web/index.html">
+<meta property="og:site_name" content="enjoyhot">
+<meta property="og:description" content="本文为参考网上一些博客翻译以及想法，自己写的一篇总结博文，可能有重复的地方，纯粹总结只用。阅读之前可参考:
+  1、How to write a web framework in Python（作者anandology是">
+<meta property="og:image" content="http://img.blog.csdn.net/20150115160426381?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20150115160448158?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20150115170410237?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20150115171915328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20150115172004250?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20150115173003782?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20140127181854562?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvb25fMXk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20140127181908062?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvb25fMXk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20140127181921109?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvb25fMXk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【python web学习】python web窥探        ">
+<meta name="twitter:description" content="本文为参考网上一些博客翻译以及想法，自己写的一篇总结博文，可能有重复的地方，纯粹总结只用。阅读之前可参考:
+  1、How to write a web framework in Python（作者anandology是">
+<link rel="publisher" href="111736291216286617217">
+
+    
+    <link rel="alternative" href="/atom.xml" title="enjoyhot" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="enjoyhot" title="enjoyhot"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="enjoyhot">enjoyhot</a></h1>
+				<h2 class="blog-motto">All things come to those who wait.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home|主页</a></li>
+					
+						<li><a href="/archives">Archives|归档</a></li>
+					
+						<li><a href="/about">About|关于</a></li>
+					
+					<li>
+ 					
+						<form class="search" action="http://deepso.enjoyhot.top/" target="_blank">
+							<label>Search</label>
+						<input name="s" type="hidden" value= 12369960100802390000 ><input type="text" name="q" size="30" placeholder="搜索"><br>
+						</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/01/15/python-web/" title="【python web学习】python web窥探        " itemprop="url">【python web学习】python web窥探        </a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/111736291216286617217?rel=author" title="enjoyhot" target="_blank" itemprop="author">enjoyhot</a>
+		
+  <p class="article-time">
+    <time datetime="2015-01-15T07:51:00.000Z" itemprop="datePublished"> 发表于 2015-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、一次最简单的web之旅"><span class="toc-number">1.</span> <span class="toc-text">一、一次最简单的web之旅</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、app的修改"><span class="toc-number">2.</span> <span class="toc-text">二、app的修改</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三、URL调度修改"><span class="toc-number">3.</span> <span class="toc-text">三、URL调度修改</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四、重构"><span class="toc-number">4.</span> <span class="toc-text">四、重构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、正则匹配URL"><span class="toc-number">4.1.</span> <span class="toc-text">1、正则匹配URL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、抽象出框架"><span class="toc-number">4.2.</span> <span class="toc-text">3、抽象出框架</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#五、wsgiref原理介绍"><span class="toc-number">5.</span> <span class="toc-text">五、wsgiref原理介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、概述"><span class="toc-number">5.1.</span> <span class="toc-text">1、概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、组成（python2-7-8）"><span class="toc-number">5.2.</span> <span class="toc-text">2、组成（python2.7.8）</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>本文为参考网上一些博客翻译以及想法，自己写的一篇总结博文，可能有重复的地方，纯粹总结只用。<br>阅读之前可参考:</p>
+<p>  1、<a href="http://anandology.com/blog/how-to-write-a-web-framework-in-python/" target="_blank" rel="external">How to write a web framework in Python</a>（作者<a href="https://github.com/anandology" target="_blank" rel="external">anandology</a>是<br><a id="more"></a><br>web.py代码的两位维护者之一，另一位则是大名鼎鼎却英年早逝的<a href="http://www.aaronsw.com/" target="_blank" rel="external">AaronSwartz</a>  ）<br>  2、<a href="http://bitworking.org/news/Why_so_many_Python_web_frameworks" target="_blank" rel="external">Why so many Python web frameworks?</a> 也是一篇很好的文章，也许它会让您对Python中Web框架的敬畏之心荡然</p>
+<p>无存:-)</p>
+<p>如果你打算用python进行网络开发的话，自己写的框架可以说是一种不受支持的想法，可能使用一个现成的Web框架（如<a href="https://www.djangoproject.com/" target="_blank" rel="external">Djang</a>、<a href="http://www.tornadoweb.org/" target="_blank" rel="external">Tornado</a> 、<a href="http://webpy.org/" target="_blank" rel="external">web.py</a> 、<a href="http://zh.wikipedia.org/wiki/Pylons" target="_blank" rel="external">Pylons</a>等）会是更合适的选择，毕竟都是大师级的作品。</p>
+<h1 id="一、一次最简单的web之旅">一、一次最简单的web之旅</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""myweb.py"""</span></span><br><span class="line"><span class="keyword">from</span> wsgiref.simple_server <span class="keyword">import</span> make_server, demo_app</span><br><span class="line"></span><br><span class="line">httpd = make_server(<span class="string">''</span>, <span class="number">8086</span>, demo_app)</span><br><span class="line">sa = httpd.socket.getsockname()</span><br><span class="line"><span class="keyword">print</span> <span class="string">'http://&#123;0&#125;:&#123;1&#125;/'</span>.format(*sa)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Respond to requests until process is killed</span></span><br><span class="line">httpd.serve_forever()</span><br></pre></td></tr></table></figure>
+<p>在命令运行之后</p>
+<p><img src="http://img.blog.csdn.net/20150115160426381?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image_mark"></p>
+<p>打开浏览器：<a href="http://0.0.0.0:8086/" target="_blank" rel="external">http://0.0.0.0:8086/</a></p>
+<p>一行”Hello world!” 和 众多环境变量值。</p>
+<p><img src="http://img.blog.csdn.net/20150115160448158?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image_mark"></p>
+<p>定位到simple_server.py文件，我们看到make_server函数和WSGIServer类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">make_server</span><span class="params">(</span><br><span class="line">    host, port, app, server_class=WSGIServer, handler_class=WSGIRequestHandler</span><br><span class="line">)</span>:</span></span><br><span class="line">    <span class="string">"""Create a new WSGI server listening on `host` and `port` for `app`"""</span></span><br><span class="line">    server = server_class((host, port), handler_class)</span><br><span class="line">    server.set_app(app)</span><br><span class="line">    <span class="keyword">return</span> server</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WSGIServer</span><span class="params">(HTTPServer)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"""BaseHTTPServer that implements the Python WSGI protocol"""</span></span><br><span class="line"></span><br><span class="line">    application = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">server_bind</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""Override server_bind to store the server name."""</span></span><br><span class="line">        HTTPServer.server_bind(self)</span><br><span class="line">        self.setup_environ()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setup_environ</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># Set up base environment</span></span><br><span class="line">        env = self.base_environ = &#123;&#125;</span><br><span class="line">        env[<span class="string">'SERVER_NAME'</span>] = self.server_name</span><br><span class="line">        env[<span class="string">'GATEWAY_INTERFACE'</span>] = <span class="string">'CGI/1.1'</span></span><br><span class="line">        env[<span class="string">'SERVER_PORT'</span>] = str(self.server_port)</span><br><span class="line">        env[<span class="string">'REMOTE_HOST'</span>]=<span class="string">''</span></span><br><span class="line">        env[<span class="string">'CONTENT_LENGTH'</span>]=<span class="string">''</span></span><br><span class="line">        env[<span class="string">'SCRIPT_NAME'</span>] = <span class="string">''</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_app</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.application</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_app</span><span class="params">(self,application)</span>:</span></span><br><span class="line">        self.application = application</span><br></pre></td></tr></table></figure>
+<p>可以看到，我们运行python文件后启动的是WSGIServer类对象（继承于HTTPServer，子类有run函数，后文会详细讲一下），而demo_app是一个拥有特定格式:接受两个参数，一个列表return</p>
+<p>对象的函数，抑或是类、类对象（见下文）。<br>很多时候，要简单写一个web框架，主要需要改动传入的app以及server。</p>
+<h1 id="二、app的修改">二、app的修改</h1><p>其中，可调用对象 包括 函数、方法、类 或者 具有<strong>call</strong>方法的 实例；environ 是一个字典对象，包括CGI风格的环境变量（CGI-style environment variables）和 WSGI必需的变</p>
+<p>量（WSGI-required variables）；start_response 是一个可调用对象，它接受两个常规参数（status，response_headers）和 一个 默认参数（exc_info）；字符串迭代对象 可以是 字符</p>
+<p>串列表、生成器函数 或者 具有<strong>iter</strong>方法的可迭代实例。更多细节参考<a href="http://www.python.org/dev/peps/pep-0333/#specification-details" target="_blank" rel="external">Specification Details</a>。</p>
+<p>   <a href="http://www.python.org/dev/peps/pep-0333/#the-application-framework-side" target="_blank" rel="external">The Application/Framework Side</a>中给出了一个典型的application实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""application.py"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simple_app</span><span class="params">(environ, start_response)</span>:</span></span><br><span class="line">    <span class="string">"""Simplest possible application object"""</span></span><br><span class="line">    status = <span class="string">'200 OK'</span></span><br><span class="line">    response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)]</span><br><span class="line">    start_response(status, response_headers)</span><br><span class="line">    <span class="keyword">return</span> [<span class="string">'Hello world!\n'</span>]</span><br></pre></td></tr></table></figure>
+<p>替换原来自带的demo_app，重新运行之</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""code.py"""</span></span><br><span class="line"><span class="keyword">from</span> wsgiref.simple_server <span class="keyword">import</span> make_server</span><br><span class="line"><span class="keyword">from</span> application <span class="keyword">import</span> my_app <span class="keyword">as</span> app</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    httpd = make_server(<span class="string">''</span>, <span class="number">8086</span>, app)</span><br><span class="line">    sa = httpd.socket.getsockname()</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'http://&#123;0&#125;:&#123;1&#125;/'</span>.format(*sa)</span><br><span class="line">    <span class="comment">#Respond to requests until process is killed</span></span><br><span class="line">    httpd.serve_forever()</span><br></pre></td></tr></table></figure>
+<p>这时就输出hello world!而没有环境变量。因为demo_app.py是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo_app</span><span class="params">(environ,start_response)</span>:</span></span><br><span class="line">   <span class="keyword">from</span> StringIO <span class="keyword">import</span> StringIO</span><br><span class="line">   stdout = StringIO()</span><br><span class="line">   <span class="keyword">print</span> &gt;;&gt;;stdout, <span class="string">"Hello world!"</span></span><br><span class="line">   <span class="keyword">print</span> &gt;;&gt;;stdout</span><br><span class="line">   h = environ.items(); h.sort()</span><br><span class="line">   <span class="keyword">for</span> k,v <span class="keyword">in</span> h:</span><br><span class="line">       <span class="keyword">print</span> &gt;;&gt;;stdout, k,<span class="string">'='</span>, repr(v)</span><br><span class="line">   start_response(<span class="string">"200 OK"</span>, [(<span class="string">'Content-Type'</span>,<span class="string">'text/plain'</span>)])</span><br><span class="line">   <span class="keyword">return</span> [stdout.getvalue()]</span><br></pre></td></tr></table></figure>
+<h1 id="三、URL调度修改">三、URL调度修改</h1><p>之前的访问server都是基于host+port的形式，那要怎样实现url的分发呢。这需要对app进行修改才行。说到这里，就先将app从一个函数改为一个类吧，再做url区分处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""application.py"""</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_app</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, environ, start_response)</span>:</span></span><br><span class="line">        self.environ = environ</span><br><span class="line">        self.start = start_response</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        status = <span class="string">'200 OK'</span></span><br><span class="line">        response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)]</span><br><span class="line">        self.start(status, response_headers)</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">"Hello world!\n"</span></span><br></pre></td></tr></table></figure>
+<p>复习一下python类的语法，说说为什么可以这样写。开始的app可以这样用</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list = simple_app(a,b)</span><br></pre></td></tr></table></figure>
+<p>   现在也可以这样用</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list = my_app(a,b)</span><br></pre></td></tr></table></figure>
+<p>   注：其中参数来自<strong>init</strong>()，返回值来自<strong>iter</strong>()的return值（yield返回的就是一个可迭代对象），也许你会问，如果是传类对象的话呢？且看下下文。</p>
+<p>   再在return的函数即<strong>iter</strong>()中修改根据不同的path进行不同返回。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""application.py"""</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_app</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, environ, start_response)</span>:</span></span><br><span class="line">        self.environ = environ</span><br><span class="line">        self.start = start_response</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        path = self.environ[<span class="string">'PATH_INFO'</span>]  <span class="comment">#environ的作用看到了吧</span></span><br><span class="line">        <span class="keyword">if</span> path == <span class="string">"/"</span>:</span><br><span class="line">            <span class="keyword">return</span> self.GET_index()</span><br><span class="line">        <span class="keyword">elif</span> path == <span class="string">"/hello"</span>:</span><br><span class="line">            <span class="keyword">return</span> self.GET_hello()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.notfound()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">GET_index</span><span class="params">(self)</span>:</span></span><br><span class="line">        status = <span class="string">'200 OK'</span></span><br><span class="line">        response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)]</span><br><span class="line">        self.start(status, response_headers)</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">"Welcome!\n"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">GET_hello</span><span class="params">(self)</span>:</span></span><br><span class="line">        status = <span class="string">'200 OK'</span></span><br><span class="line">        response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)]</span><br><span class="line">        self.start(status, response_headers)</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">"Hello world!\n"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notfound</span><span class="params">(self)</span>:</span></span><br><span class="line">        status = <span class="string">'404 Not Found'</span></span><br><span class="line">        response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)]</span><br><span class="line">        self.start(status, response_headers)</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">"Not Found\n"</span></span><br></pre></td></tr></table></figure>
+<p> 这时用浏览器就可以访问/,/hello,其他访问为Not Found。</p>
+<h1 id="四、重构">四、重构</h1><h2 id="1、正则匹配URL">1、正则匹配URL</h2><p>消除URL硬编码，增加URL调度的灵活性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""application.py"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> re <span class="comment">##########修改点</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_app</span>:</span></span><br><span class="line"></span><br><span class="line">    urls = (</span><br><span class="line">        (<span class="string">"/"</span>, <span class="string">"index"</span>),</span><br><span class="line">        (<span class="string">"/hello/(.*)"</span>, <span class="string">"hello"</span>),</span><br><span class="line">    ) <span class="comment">##########修改点，Django工程中url.py即视感</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, environ, start_response)</span>:</span></span><br><span class="line">        self.environ = environ</span><br><span class="line">        self.start = start_response</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span> <span class="comment">##########修改点</span></span><br><span class="line">        path = self.environ[<span class="string">'PATH_INFO'</span>]</span><br><span class="line">        method = self.environ[<span class="string">'REQUEST_METHOD'</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> pattern, name <span class="keyword">in</span> self.urls:</span><br><span class="line">            m = re.match(<span class="string">'^'</span> + pattern + <span class="string">'$'</span>, path) <span class="comment">#注意这里，url匹配函数名</span></span><br><span class="line">            <span class="keyword">if</span> m:</span><br><span class="line">                <span class="comment">#pass the matched groups as arguments to the function</span></span><br><span class="line">                args = m.groups()</span><br><span class="line">                funcname = method.upper() + <span class="string">'_'</span> + name</span><br><span class="line">                <span class="keyword">if</span> hasattr(self, funcname):</span><br><span class="line">                    func = getattr(self, funcname)</span><br><span class="line">                    <span class="keyword">return</span> func(*args)</span><br><span class="line">        <span class="keyword">return</span> self.notfound()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">GET_index</span><span class="params">(self)</span>:</span></span><br><span class="line">        status = <span class="string">'200 OK'</span></span><br><span class="line">        response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)]</span><br><span class="line">        self.start(status, response_headers) <span class="comment">#遵循调用start_response后再return iterObject</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="string">"Welcome!\n"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">GET_hello</span><span class="params">(self, name)</span>:</span> <span class="comment">##########修改点</span></span><br><span class="line">        status = <span class="string">'200 OK'</span></span><br><span class="line">        response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)]</span><br><span class="line">        self.start(status, response_headers) </span><br><span class="line">        <span class="keyword">yield</span> <span class="string">"Hello %s!\n"</span> % name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notfound</span><span class="params">(self)</span>:</span></span><br><span class="line">        status = <span class="string">'404 Not Found'</span></span><br><span class="line">        response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)]</span><br><span class="line">        self.start(status, response_headers)</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">"Not Found\n"</span></span><br><span class="line">``` </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">## 2、消除GET_*方法中的重复代码，并且允许它们返回字符串：</span></span><br><span class="line">  </span><br><span class="line">```python </span><br><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""application.py"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_app</span>:</span></span><br><span class="line"></span><br><span class="line">    urls = (</span><br><span class="line">        (<span class="string">"/"</span>, <span class="string">"index"</span>),</span><br><span class="line">        (<span class="string">"/hello/(.*)"</span>, <span class="string">"hello"</span>),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, environ, start_response)</span>:</span> <span class="comment">##########修改点</span></span><br><span class="line">        self.environ = environ</span><br><span class="line">        self.start = start_response</span><br><span class="line">        self.status = <span class="string">'200 OK'</span></span><br><span class="line">        self._headers = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span> <span class="comment">##########修改点</span></span><br><span class="line">        result = self.delegate() <span class="comment">#利用这个函数先进行返回结果的收集</span></span><br><span class="line">        self.start(self.status, self._headers) <span class="comment">#start_response</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 将返回值result（字符串 或者 字符串列表）转换为迭代对象</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(result, basestring):</span><br><span class="line">            <span class="keyword">return</span> iter([result])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> iter(result)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delegate</span><span class="params">(self)</span>:</span> <span class="comment">##########修改点</span></span><br><span class="line">        path = self.environ[<span class="string">'PATH_INFO'</span>]</span><br><span class="line">        method = self.environ[<span class="string">'REQUEST_METHOD'</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> pattern, name <span class="keyword">in</span> self.urls:</span><br><span class="line">            m = re.match(<span class="string">'^'</span> + pattern + <span class="string">'$'</span>, path)</span><br><span class="line">            <span class="keyword">if</span> m:</span><br><span class="line">                <span class="comment"># pass the matched groups as arguments to the function</span></span><br><span class="line">                args = m.groups()</span><br><span class="line">                funcname = method.upper() + <span class="string">'_'</span> + name</span><br><span class="line">                <span class="keyword">if</span> hasattr(self, funcname):</span><br><span class="line">                    func = getattr(self, funcname)</span><br><span class="line">                    <span class="keyword">return</span> func(*args)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.notfound()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">header</span><span class="params">(self, name, value)</span>:</span> <span class="comment">##########修改点</span></span><br><span class="line">        self._headers.append((name, value))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">GET_index</span><span class="params">(self)</span>:</span> <span class="comment">##########修改点</span></span><br><span class="line">        self.header(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Welcome!\n"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">GET_hello</span><span class="params">(self, name)</span>:</span> <span class="comment">##########修改点</span></span><br><span class="line">        self.header(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello %s!\n"</span> % name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notfound</span><span class="params">(self)</span>:</span> <span class="comment">##########修改点</span></span><br><span class="line">        self.status = <span class="string">'404 Not Found'</span></span><br><span class="line">        self.header(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Not Found\n"</span></span><br></pre></td></tr></table></figure>
+<h2 id="3、抽象出框架">3、抽象出框架</h2><p>为了将类my_app抽象成一个独立的框架，需要作出以下修改：</p>
+<p>   1、剥离出其中的具体处理细节：urls配置 和 GET_*方法（改成在多个类中实现相应的GET方法）</p>
+<p>   2、把方法header实现为类方法（classmethod），以方便外部作为功能函数调用</p>
+<p>   3、改用 具有<strong>call</strong>方法的 实例 来实现application（上文提到）</p>
+<p>修改后的application.py（最终版本）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""application.py"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_app</span>:</span></span><br><span class="line">    <span class="string">"""my simple web framework"""</span></span><br><span class="line"></span><br><span class="line">    headers = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, urls=<span class="params">()</span>, fvars=&#123;&#125;)</span>:</span></span><br><span class="line">        self._urls = urls</span><br><span class="line">        self._fvars = fvars</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, environ, start_response)</span>:</span></span><br><span class="line">        self._status = <span class="string">'200 OK'</span> <span class="comment"># 默认状态OK</span></span><br><span class="line">        <span class="keyword">del</span> self.headers[:] <span class="comment"># 清空上一次的headers</span></span><br><span class="line"></span><br><span class="line">        result = self._delegate(environ)</span><br><span class="line">        start_response(self._status, self.headers)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 将返回值result（字符串 或者 字符串列表）转换为迭代对象</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(result, basestring):</span><br><span class="line">            <span class="keyword">return</span> iter([result])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> iter(result)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_delegate</span><span class="params">(self, environ)</span>:</span></span><br><span class="line">        path = environ[<span class="string">'PATH_INFO'</span>]</span><br><span class="line">        method = environ[<span class="string">'REQUEST_METHOD'</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> pattern, name <span class="keyword">in</span> self._urls:</span><br><span class="line">            m = re.match(<span class="string">'^'</span> + pattern + <span class="string">'$'</span>, path)</span><br><span class="line">            <span class="keyword">if</span> m:</span><br><span class="line">                <span class="comment"># pass the matched groups as arguments to the function</span></span><br><span class="line">                args = m.groups()</span><br><span class="line">                funcname = method.upper() <span class="comment"># 方法名大写（如GET、POST）</span></span><br><span class="line">                klass = self._fvars.get(name) <span class="comment"># 根据字符串名称查找类对象</span></span><br><span class="line">                <span class="keyword">if</span> hasattr(klass, funcname):</span><br><span class="line">                    func = getattr(klass, funcname)</span><br><span class="line">                    <span class="keyword">return</span> func(klass(), *args)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self._notfound()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_notfound</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._status = <span class="string">'404 Not Found'</span></span><br><span class="line">        self.header(<span class="string">'Content-type'</span>, <span class="string">'text/plain'</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Not Found\n"</span></span><br><span class="line"></span><br><span class="line">    <span class="decorator">@classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">header</span><span class="params">(cls, name, value)</span>:</span></span><br><span class="line">        cls.headers.append((name, value))</span><br></pre></td></tr></table></figure>
+<p>到这里，基本上就算是小功告成了，但只是了解了怎么用那些子类，大篇幅还是讲怎么设计。窥探一下wsgiref.simple_server。</p>
+<h1 id="五、wsgiref原理介绍">五、wsgiref原理介绍</h1><h2 id="1、概述">1、概述</h2><p>a.什么是WSGI, WSGI application, WSGI server, WSGI middleware.</p>
+<p>WSGI是关于Python脚本与Web服务器交互的协议，wsgi将 web 组件分为三类： web服务器,web中间件,web应用程序。</p>
+<p><img src="http://img.blog.csdn.net/20150115170410237?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image_mark"></p>
+<p>b.WSGI Server有哪些</p>
+<p>比如 Django、CherryPy 都自带 WSGI server,主要是测试用途, 发布时则使用生产环境的 WSGI server，例如Apache，nginx等，而有些 WSGI 下的框架比如 pylons、bfg 等, 自己不实现 WSGI server。</p>
+<p>wsgiref就是python自带的WSGI server。上面提到的app需要传入的两个参数application(environ, start_response)，其实就是一个接口两个参数的集合体。<a href="http://blog.csdn.net/sraing/article/details/8455242" target="_blank" rel="external">一篇博文</a><br>这样说明：</p>
+<p>wsgi server 基本工作流程：</p>
+<p>1、服务器创建socket，监听端口，等待客户端连接。</p>
+<p>2、当有请求来时，服务器解析客户端信息放到环境变量environ中，并调用绑定的handler来处理请求。</p>
+<p>3、handler解析这个http请求，将请求信息例如method，path等放到environ中。</p>
+<p>4、wsgi handler再将一些服务器端信息也放到environ中，最后服务器信息，客户端信息，本次请求信息全部都保存到了环境变量environ中。</p>
+<p>5、wsgi handler 调用注册的wsgi app，并将environ和回调函数传给wsgi app</p>
+<p>6、wsgi app 将reponse header/status/body 回传给wsgi handler</p>
+<p>7、最终handler还是通过socket将response信息塞回给客户端。</p>
+<h2 id="2、组成（python2-7-8）">2、组成（python2.7.8）</h2><p><img src="http://img.blog.csdn.net/20150115171915328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image_mark"></p>
+<p><img src="http://img.blog.csdn.net/20150115172004250?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image_mark"></p>
+<p>simple_server</p>
+<p>这一模块实现了一个简单的 HTTP 服务器，并给出了一个简单的 demo，运行：</p>
+<p>python simple_server.py</p>
+<p>会启动这个demo，运行一次请求，并把这次请求中涉及到的环境变量在浏览器中显示出来。</p>
+<p>handlers</p>
+<p>simple_server模块将HTTP服务器分成了 Server 部分和Handler部分，前者负责接收请求，后者负责具体的处理， 其中Handler部分主要在handlers中实现。</p>
+<p>headers</p>
+<p>这一模块主要是为HTTP协议中header部分建立数据结构。</p>
+<p>util</p>
+<p>这一模块包含了一些工具函数，主要用于对环境变量，URL的处理。</p>
+<p>validate</p>
+<p>这一模块提供了一个验证工具，可以用于验证你的实现是否符合WSGI标准。</p>
+<p>simple_server 模块主要有两部分内容，上面一到四的内容可以总结。</p>
+<p>应用程序</p>
+<p>函数demo_app是应用程序部分</p>
+<p>服务器程序</p>
+<p>服务器程序主要分成Server 和 Handler两部分，另外还有一个函数 make_server 用来生成一个服务器实例</p>
+<p>各种继承关系：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># M:</span></span><br><span class="line"><span class="comment">#         +------------+</span></span><br><span class="line"><span class="comment">#         | BaseServer |</span></span><br><span class="line"><span class="comment">#         +------------+</span></span><br><span class="line"><span class="comment">#               |</span></span><br><span class="line"><span class="comment">#               V</span></span><br><span class="line"><span class="comment">#         +------------+</span></span><br><span class="line"><span class="comment">#         | TCPServer  |</span></span><br><span class="line"><span class="comment">#         +------------+</span></span><br><span class="line"><span class="comment">#               |</span></span><br><span class="line"><span class="comment">#               V</span></span><br><span class="line"><span class="comment">#         +------------+</span></span><br><span class="line"><span class="comment">#         | HTTPServer |</span></span><br><span class="line"><span class="comment">#         +------------+</span></span><br><span class="line"><span class="comment">#               |</span></span><br><span class="line"><span class="comment">#               V</span></span><br><span class="line"><span class="comment">#         +------------+</span></span><br><span class="line"><span class="comment">#         | WSGIServer |</span></span><br><span class="line"><span class="comment">#         +------------+</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment"># M:</span></span><br><span class="line"><span class="comment">#         +--------------------+</span></span><br><span class="line"><span class="comment">#         | BaseRequestHandler |</span></span><br><span class="line"><span class="comment">#         +--------------------+</span></span><br><span class="line"><span class="comment">#                   |</span></span><br><span class="line"><span class="comment">#                   V</span></span><br><span class="line"><span class="comment">#         +-----------------------+</span></span><br><span class="line"><span class="comment">#         | StreamRequestHandler  |</span></span><br><span class="line"><span class="comment">#         +-----------------------+</span></span><br><span class="line"><span class="comment">#                   |</span></span><br><span class="line"><span class="comment">#                   V</span></span><br><span class="line"><span class="comment">#         +------------------------+</span></span><br><span class="line"><span class="comment">#         | BaseHTTPRequestHandler |</span></span><br><span class="line"><span class="comment">#         +------------------------+</span></span><br><span class="line"><span class="comment">#                   |</span></span><br><span class="line"><span class="comment">#                   V</span></span><br><span class="line"><span class="comment">#         +--------------------+</span></span><br><span class="line"><span class="comment">#         | WSGIRequestHandler |</span></span><br><span class="line"><span class="comment">#         +--------------------+</span></span><br></pre></td></tr></table></figure>
+<pre><code class="python"><span class="comment"># M:</span>
+<span class="comment">#        +-------------+</span>
+<span class="comment">#        | BaseHandler |  </span>
+<span class="comment">#        +-------------+</span>
+<span class="comment">#               |</span>
+<span class="comment">#               V</span>
+<span class="comment">#       +----------------+</span>
+<span class="comment">#       | SimpleHandler  |</span>
+<span class="comment">#       +----------------+</span>
+<span class="comment">#               |</span>
+<span class="comment">#               V</span>
+<span class="comment">#       +---------------+</span>
+<span class="comment">#       | ServerHandler |</span>
+<span class="comment">#       +---------------+</span>
+</code></pre>
+<p>在调用make_server的时候，都发生了什么</p>
+<p><img src="http://img.blog.csdn.net/20150115173003782?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image_mark"></p>
+<p>  再这里，就不细讲handler的处理过程了，很多时候网络handler的研究需要看源码才能真正消化。</p>
+<p>  以下完全引用<a href="http://blog.csdn.net/on_1y/article/details/18818081" target="_blank" rel="external">on_1y</a>的一篇博文，该博文讲得很细，不过需要研究源码才能真正消化。可以先看doc:<a href="https://docs.python.org/2/library/wsgiref.html" target="_blank" rel="external">https://docs.python.org/2/library/wsgiref.html</a><br>再看源码:<a href="https://pypi.python.org/pypi/wsgiref" target="_blank" rel="external">https://pypi.python.org/pypi/wsgiref</a></p>
+<p>  headers</p>
+<p><img src="http://img.blog.csdn.net/20140127181854562?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvb25fMXk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="image_mark"></p>
+<p> 这个模块是对HTTP 响应部分的头部设立的数据结构，实现了一个类似Python 中 dict的数据结构。可以看出，它实现了一些函数来支持一些运算符，例如 <strong>len</strong>, <strong>setitem</strong>, </p>
+<p><strong>getitem</strong>, <strong>delitem</strong>, <strong>str</strong>, 另外，还实现了 dict 操作中的get, keys, values函数<br>  <a href="https://github.com/minixalpha/StrayBirds/blob/gh-pages/_posts/2014-01-24-wsgiref-src-intro.md#util" target="_blank" rel="external"></a><br>util<br><img src="http://img.blog.csdn.net/20140127181908062?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvb25fMXk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="image_mark"></p>
+<p>  这个模块主要就是一些有用的函数，用于处理URL, 环境变量。</p>
+<p><a href="https://github.com/minixalpha/StrayBirds/blob/gh-pages/_posts/2014-01-24-wsgiref-src-intro.md#validate" target="_blank" rel="external"></a><br>  validate</p>
+<p><img src="http://img.blog.csdn.net/20140127181921109?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvb25fMXk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="image_mark"></p>
+<p>  这个模块主要是检查你对WSGI的实现，是否满足标准，包含三个部分：</p>
+<ul>
+<li>validator</li>
+</ul>
+<ul>
+<li>Wrapper</li>
+</ul>
+<ul>
+<li>Check</li>
+</ul>
+<p>  validator 调用后面两个部分来完成验证工作，可以看出Check部分对WSGI中规定的各个部分进行了检查。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/python/">python</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.enjoyhot.top/2015/01/15/python-web/" data-title="【python web学习】python web窥探         | enjoyhot" data-tsina="2428685001" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/01/18/python-analysis/" title="python进行文档抽取与解析的简单实现        ">
+  <strong>上一篇：</strong><br/>
+  <span>
+  python进行文档抽取与解析的简单实现        </span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/01/09/python-chinese/"  title="python spider error occurs to Chinese words">
+ <strong>下一篇：</strong><br/> 
+ <span>python spider error occurs to Chinese words
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/01/15/python-web/" data-title="【python web学习】python web窥探        " data-url="http://www.enjoyhot.top/2015/01/15/python-web/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、一次最简单的web之旅"><span class="toc-number">1.</span> <span class="toc-text">一、一次最简单的web之旅</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、app的修改"><span class="toc-number">2.</span> <span class="toc-text">二、app的修改</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三、URL调度修改"><span class="toc-number">3.</span> <span class="toc-text">三、URL调度修改</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四、重构"><span class="toc-number">4.</span> <span class="toc-text">四、重构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、正则匹配URL"><span class="toc-number">4.1.</span> <span class="toc-text">1、正则匹配URL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、抽象出框架"><span class="toc-number">4.2.</span> <span class="toc-text">3、抽象出框架</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#五、wsgiref原理介绍"><span class="toc-number">5.</span> <span class="toc-text">五、wsgiref原理介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、概述"><span class="toc-number">5.1.</span> <span class="toc-text">1、概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、组成（python2-7-8）"><span class="toc-number">5.2.</span> <span class="toc-text">2、组成（python2.7.8）</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2428685001&verifier=553ef0af&dpc=1"></iframe>
+</div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/HPC/" title="HPC">HPC<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Machine-Learning/" title="Machine Learning">Machine Learning<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>6</sup></a></li>
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/database/" title="database">database<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/django/" title="django">django<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/life/" title="life">life<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/photo/" title="photo">photo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/前端/" title="前端">前端<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/茶语/" title="茶语">茶语<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">9</span></li></ul>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/gugugujiawei" target="_blank" title="enjoyhot&#39;s CSDN">enjoyhot&#39;s CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.enjoyhot.top" target="_blank" title="其他域名">其他域名</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/HPC/" style="font-size: 12.5px;">HPC</a><a href="/tags/Machine-Learning/" style="font-size: 15px;">Machine Learning</a><a href="/tags/android/" style="font-size: 20px;">android</a><a href="/tags/cluster/" style="font-size: 10px;">cluster</a><a href="/tags/django/" style="font-size: 10px;">django</a><a href="/tags/html/" style="font-size: 10px;">html</a><a href="/tags/javascript/" style="font-size: 10px;">javascript</a><a href="/tags/life/" style="font-size: 12.5px;">life</a><a href="/tags/linux/" style="font-size: 15px;">linux</a><a href="/tags/listview/" style="font-size: 10px;">listview</a><a href="/tags/markdown/" style="font-size: 10px;">markdown</a><a href="/tags/mongoengine/" style="font-size: 10px;">mongoengine</a><a href="/tags/ndk/" style="font-size: 12.5px;">ndk</a><a href="/tags/photo/" style="font-size: 10px;">photo</a><a href="/tags/pymongo/" style="font-size: 10px;">pymongo</a><a href="/tags/python/" style="font-size: 17.5px;">python</a><a href="/tags/scrapy/" style="font-size: 10px;">scrapy</a><a href="/tags/前端/" style="font-size: 10px;">前端</a><a href="/tags/实验室/" style="font-size: 10px;">实验室</a><a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a><a href="/tags/生活/" style="font-size: 10px;">生活</a><a href="/tags/茶语/" style="font-size: 10px;">茶语</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+
+
+<br>
+<!-- 打赏表单 -->
+<form id="donate" action="https://shenghuo.alipay.com/send/payment/fill.htm" 
+	method="POST" target="_blank" accept-charset="GBK" style="display: none;">
+	<input name="optEmail" type="hidden" value="13570236302" />
+	<input name="payAmount" type="hidden" value="1" />
+	<input id="title" name="title" type="hidden" value="默认显示的付款说明" />
+	<input name="memo" type="hidden" value="备注" />
+</form>
+<!-- /打赏表单 -->
+
+<!-- 打赏按钮的样式表 -->
+<style type="text/css">
+	.donate_bar{ text-align: center; }
+	.donate_bar a.btn_donate{
+		display: inline-block;
+		width: 82px;
+		height: 82px;
+		background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+		_background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+	}
+	.donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+	.donate_bar .donate_txt {
+		display: block;
+		color: #9d9d9d;
+		font: 14px/2 "Microsoft Yahei";
+	}
+</style>
+<!-- /打赏按钮的样式表 -->
+
+<!-- 打赏按钮 -->
+<div class="donate_bar">
+	<a class="btn_donate" href="javascript:;" title="Donate 打赏" 
+		onclick="document.getElementById('donate').submit()"></a>
+	<span class="donate_txt">
+		&uarr;<br/>
+		If you enjoy the blog,
+		please feel free to donate~
+		Thx for your support.
+	</span>
+	<span class="donate_txt">
+		若本文对您有帮助，求打赏~ 谢谢您的支持和鼓励。
+	</span>
+</div>
+<!-- /打赏按钮 -->
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jiawei Gu in CCNL,SCUT. <br/>
+			Here shares some of my work about tech,life and study.Welcome to communicate and discuss together.^_^</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2428685001" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/enjoyhot" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		<a href="https://www.linkedin.com/in/gugugujiawei" target="_blank" class="icon-linkedin" title="linkedin"></a>
+		
+		
+		
+		<a href="https://www.zhihu.com/people/enjoyhot" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		<a href="https://plus.google.com/111736291216286617217?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:gugugujiawei@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://www.enjoyhot.top/about" target="_blank" title="enjoyhot">enjoyhot</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+  
+    c.click();
+    
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"enjoyhot"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F715efc417137bb8b58f6b4edfa378ccd' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254644815'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254644815' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+
+  </body>
+</html>

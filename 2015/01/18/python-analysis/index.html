@@ -1,0 +1,611 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>python进行文档抽取与解析的简单实现         | enjoyhot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="enjoyhot">
+    
+
+    
+    <meta name="description" content="一、前文  之前被叫去做网络爬虫，爬取新浪新闻的url，标题，内容和评论，不过在需求上有点改变，主要是评论的间隔被要求有‘\t’的分割，比如将
+1234&amp;lt;comment&amp;gt;2014-12-10 18:53:20	1004400533	遗弃亲生骨肉猪狗不如，难道就不怕受到良心谴责？你能睡得安稳？2014-12-10 17:17:07	3294923134	这父亲是人吗？&amp;lt;/comme">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python进行文档抽取与解析的简单实现        ">
+<meta property="og:url" content="http://www.enjoyhot.top/2015/01/18/python-analysis/index.html">
+<meta property="og:site_name" content="enjoyhot">
+<meta property="og:description" content="一、前文  之前被叫去做网络爬虫，爬取新浪新闻的url，标题，内容和评论，不过在需求上有点改变，主要是评论的间隔被要求有‘\t’的分割，比如将
+1234&amp;lt;comment&amp;gt;2014-12-10 18:53:20	1004400533	遗弃亲生骨肉猪狗不如，难道就不怕受到良心谴责？你能睡得安稳？2014-12-10 17:17:07	3294923134	这父亲是人吗？&amp;lt;/comme">
+<meta property="og:image" content="http://img.blog.csdn.net/20150118141804512?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python进行文档抽取与解析的简单实现        ">
+<meta name="twitter:description" content="一、前文  之前被叫去做网络爬虫，爬取新浪新闻的url，标题，内容和评论，不过在需求上有点改变，主要是评论的间隔被要求有‘\t’的分割，比如将
+1234&amp;lt;comment&amp;gt;2014-12-10 18:53:20	1004400533	遗弃亲生骨肉猪狗不如，难道就不怕受到良心谴责？你能睡得安稳？2014-12-10 17:17:07	3294923134	这父亲是人吗？&amp;lt;/comme">
+<link rel="publisher" href="111736291216286617217">
+
+    
+    <link rel="alternative" href="/atom.xml" title="enjoyhot" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="enjoyhot" title="enjoyhot"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="enjoyhot">enjoyhot</a></h1>
+				<h2 class="blog-motto">All things come to those who wait.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home|主页</a></li>
+					
+						<li><a href="/archives">Archives|归档</a></li>
+					
+						<li><a href="/about">About|关于</a></li>
+					
+					<li>
+ 					
+						<form class="search" action="http://deepso.enjoyhot.top/" target="_blank">
+							<label>Search</label>
+						<input name="s" type="hidden" value= 12369960100802390000 ><input type="text" name="q" size="30" placeholder="搜索"><br>
+						</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/01/18/python-analysis/" title="python进行文档抽取与解析的简单实现        " itemprop="url">python进行文档抽取与解析的简单实现        </a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/111736291216286617217?rel=author" title="enjoyhot" target="_blank" itemprop="author">enjoyhot</a>
+		
+  <p class="article-time">
+    <time datetime="2015-01-18T05:36:00.000Z" itemprop="datePublished"> 发表于 2015-01-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、前文"><span class="toc-number">1.</span> <span class="toc-text">一、前文</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、抽取和解析"><span class="toc-number">2.</span> <span class="toc-text">二、抽取和解析</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="一、前文">一、前文</h1><p>  之前被叫去做网络爬虫，爬取新浪新闻的url，标题，内容和评论，不过在需求上有点改变，主要是评论的间隔被要求有‘\t’的分割，比如将</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">comment</span>&gt;</span></span><br><span class="line">2014-12-10 18:53:20	1004400533	遗弃亲生骨肉猪狗不如，难道就不怕受到良心谴责？你能睡得安稳？</span><br><span class="line">2014-12-10 17:17:07	3294923134	这父亲是人吗？</span><br><span class="line"><span class="tag">&lt;/<span class="title">comment</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>  改为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">comment</span>&gt;</span></span><br><span class="line">2014-12-10 18:53:20 1004400533</span><br><span class="line">遗弃亲生骨肉猪狗不如，难道就不怕受到良心谴责？你能睡得安稳？</span><br><span class="line">2014-12-10 17:17:07 3294923134</span><br><span class="line">这父亲是人吗？</span><br><span class="line"><span class="tag">&lt;/<span class="title">comment</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>  试过重新爬取，不过新浪在2015年后，做了些改变，一是评论api下的内容有了些修改，从原本的中文字符变为了’\u’，解决办法可以参考另一篇博文<br>  <a href="http://blog.csdn.net/gugugujiawei/article/details/42559345" target="_blank" rel="external">三张图告诉你python爬虫时转换\u中文字符的“坑”</a>，二是在爬虫上需要做好浏览器模拟的工作，不然很容易被封杀，而且，在做大规模爬取的时候，需要利用多线程或者分布式的手段进行，多线程稍不注意，到了系统线程的上限，这是要注意的。</p>
+<h1 id="二、抽取和解析">二、抽取和解析</h1><p>  因为我想爬取这个页面（<a href="http://news.sina.com.cn/society/" target="_blank" rel="external">social</a>）一年的内容，已经超过2万了（只算那些有评论的新闻），所以经常第二天回来发现中途error。分布式计算的东西现在还没去学习，所以还是复习一下python。</p>
+<p>  在这个简短的程序中，用到了SGMLParser类进行解析，这个类封装了可以实现对具有标签的字符串的处理函数，当然没有标签也是可以用的，不需要冠以html文本种类的要求，网上很多例子可能会拿HTMLParser与SGMLParser进行说明，通过解析X.html进行说明。这里我只采用单线程的方法。</p>
+<p>  SGMLParser:</p>
+<p>  1、通过利用开关变量的方法进行标签间内容的抽取和解析，在此之前，需要进行变量的初始化，可以利用<strong>init</strong>()或者<strong>reset</strong>()，一般用<strong>reset</strong>()。</p>
+<p>  2、start_x(),end_x(),handle_data()，这三个函数，第一个是当读取到<x>;时，执行的函数，第一个是当读取到</x>;时，执行的函数,第三个是当遇到标签内的内容，就会调用这个函数，更详细一点可以参考<br>  <a href="http://blog.csdn.net/nwpulei/article/details/7272832" target="_blank" rel="external">这篇博文</a></p>
+<p>  变量说明：</p>
+<blockquote>
+<p>rootdir：原始文件目录<br>    rootdir2：需要存放转换好的文件目录</p>
+</blockquote>
+<p>  方法说明：</p>
+<blockquote>
+<p>1、通过SGMLParser读取<comment>;</comment>;中的内容，调用solve()函数，利用正则匹配的方法将原来不符合规范的空格替换为’\t’，返回需要替换的内容到comment变量<br>  2、利用正则匹配找到定位到<comment>;</comment>;，替换为Parse类对象的comment值</p>
+</blockquote>
+<p>  （正则表达式的方法参考以下注释）</p>
+<p>  完整代码：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from sgmllib import SGMLParser</span><br><span class="line">import re,os</span><br><span class="line">rootdir = 'F:\\Python27\\pythonproject\\fuck\\file1\\'</span><br><span class="line">rootdir2 = 'F:\\Python27\\pythonproject\\fuck\\file2\\'</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Parse(SGMLParser):</span><br><span class="line">    def __init__(self,filename):</span><br><span class="line">        self.filename = filename  </span><br><span class="line">        self.comment = '' </span><br><span class="line">        SGMLParser.__init__(self)       </span><br><span class="line">    def reset(self):</span><br><span class="line">        self.found_comment = False</span><br><span class="line">        SGMLParser.reset(self)</span><br><span class="line">    def start_comment(self, attrs):</span><br><span class="line">        self.found_comment = True</span><br><span class="line">    def end_comment(self):</span><br><span class="line">        self.found_comment = False</span><br><span class="line">    def handle_data(self, text):</span><br><span class="line">        if self.found_comment == True:</span><br><span class="line">            self.comment=solve(self.filename,text)</span><br><span class="line"></span><br><span class="line">def solve(filename,text):   </span><br><span class="line">    #找到3个或3个以上空格的地方，替换为'\t'</span><br><span class="line">    strinfo = re.compile('(\s\s\s*)')</span><br><span class="line">    str_result = strinfo.sub('\t',text)</span><br><span class="line">    return str_result</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">if __name__ == '__main__':</span><br><span class="line">        </span><br><span class="line">    global rootdir,rootdir2</span><br><span class="line">    for parent,dirnames,filenames in os.walk(rootdir):    #三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字</span><br><span class="line">        for filename in filenames:</span><br><span class="line">            #print filename</span><br><span class="line">            </span><br><span class="line">            filesource = open(rootdir+filename, 'a+')    </span><br><span class="line">            s = filesource.read()            </span><br><span class="line">            filesource.close()</span><br><span class="line">            #初始化实例p,feed()函数为添加处理字符串</span><br><span class="line">            p = Parse(filename)            </span><br><span class="line">            p.feed(s)</span><br><span class="line">            </span><br><span class="line">            filedes = open(rootdir2+filename, 'a+')</span><br><span class="line">            #因为原来原数据中存在不以&lt;/comment&gt;;结尾的内容，因此需要先做处理</span><br><span class="line">            pattern1='&lt;/comment&gt;;'</span><br><span class="line">            if re.findall(pattern1,s) == []:</span><br><span class="line">                s=s+'\n&lt;/comment&gt;;'</span><br><span class="line">            </span><br><span class="line">&lt;span style="white-space:pre"&gt;;	&lt;/span&gt;;    #定位到comment标签位置，([\s\S]*)能够匹配所有字符，包括换行符，然后替换</span><br><span class="line">            strinfo = re.compile('&lt;comment&gt;;([\s\S]*)&lt;/comment&gt;;')</span><br><span class="line">            str_result = strinfo.sub('&lt;comment&gt;;'+p.comment+'&lt;/comment&gt;;',s)</span><br><span class="line">            </span><br><span class="line">            filedes.write(str_result)</span><br><span class="line">            filedes.close()</span><br></pre></td></tr></table></figure>
+<p> 结果：</p>
+<p>   <img src="http://img.blog.csdn.net/20150118141804512?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ3VndWd1amlhd2Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image_mark"></p>
+<p>  注意：win7系统一般文件夹下的文件总数（包括文件夹）不能超过21845个，不然会提示错误。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/python/">python</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.enjoyhot.top/2015/01/18/python-analysis/" data-title="python进行文档抽取与解析的简单实现         | enjoyhot" data-tsina="2428685001" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/01/18/machinelearning-linear-regression/" title="【machine learning】linear regression        ">
+  <strong>上一篇：</strong><br/>
+  <span>
+  【machine learning】linear regression        </span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/01/15/python-web/"  title="【python web学习】python web窥探        ">
+ <strong>下一篇：</strong><br/> 
+ <span>【python web学习】python web窥探        
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/01/18/python-analysis/" data-title="python进行文档抽取与解析的简单实现        " data-url="http://www.enjoyhot.top/2015/01/18/python-analysis/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一、前文"><span class="toc-number">1.</span> <span class="toc-text">一、前文</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、抽取和解析"><span class="toc-number">2.</span> <span class="toc-text">二、抽取和解析</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=2428685001&verifier=553ef0af&dpc=1"></iframe>
+</div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/HPC/" title="HPC">HPC<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Machine-Learning/" title="Machine Learning">Machine Learning<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>6</sup></a></li>
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/database/" title="database">database<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/django/" title="django">django<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/life/" title="life">life<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/photo/" title="photo">photo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/前端/" title="前端">前端<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/生活/" title="生活">生活<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/茶语/" title="茶语">茶语<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">9</span></li></ul>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/gugugujiawei" target="_blank" title="enjoyhot&#39;s CSDN">enjoyhot&#39;s CSDN</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.enjoyhot.top" target="_blank" title="其他域名">其他域名</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/HPC/" style="font-size: 12.5px;">HPC</a><a href="/tags/Machine-Learning/" style="font-size: 15px;">Machine Learning</a><a href="/tags/android/" style="font-size: 20px;">android</a><a href="/tags/cluster/" style="font-size: 10px;">cluster</a><a href="/tags/django/" style="font-size: 10px;">django</a><a href="/tags/html/" style="font-size: 10px;">html</a><a href="/tags/javascript/" style="font-size: 10px;">javascript</a><a href="/tags/life/" style="font-size: 12.5px;">life</a><a href="/tags/linux/" style="font-size: 15px;">linux</a><a href="/tags/listview/" style="font-size: 10px;">listview</a><a href="/tags/markdown/" style="font-size: 10px;">markdown</a><a href="/tags/mongoengine/" style="font-size: 10px;">mongoengine</a><a href="/tags/ndk/" style="font-size: 12.5px;">ndk</a><a href="/tags/photo/" style="font-size: 10px;">photo</a><a href="/tags/pymongo/" style="font-size: 10px;">pymongo</a><a href="/tags/python/" style="font-size: 17.5px;">python</a><a href="/tags/scrapy/" style="font-size: 10px;">scrapy</a><a href="/tags/前端/" style="font-size: 10px;">前端</a><a href="/tags/实验室/" style="font-size: 10px;">实验室</a><a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a><a href="/tags/生活/" style="font-size: 10px;">生活</a><a href="/tags/茶语/" style="font-size: 10px;">茶语</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+
+
+<br>
+<!-- 打赏表单 -->
+<form id="donate" action="https://shenghuo.alipay.com/send/payment/fill.htm" 
+	method="POST" target="_blank" accept-charset="GBK" style="display: none;">
+	<input name="optEmail" type="hidden" value="13570236302" />
+	<input name="payAmount" type="hidden" value="1" />
+	<input id="title" name="title" type="hidden" value="默认显示的付款说明" />
+	<input name="memo" type="hidden" value="备注" />
+</form>
+<!-- /打赏表单 -->
+
+<!-- 打赏按钮的样式表 -->
+<style type="text/css">
+	.donate_bar{ text-align: center; }
+	.donate_bar a.btn_donate{
+		display: inline-block;
+		width: 82px;
+		height: 82px;
+		background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat;
+		_background: url("http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif") no-repeat; 
+	}
+	.donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+	.donate_bar .donate_txt {
+		display: block;
+		color: #9d9d9d;
+		font: 14px/2 "Microsoft Yahei";
+	}
+</style>
+<!-- /打赏按钮的样式表 -->
+
+<!-- 打赏按钮 -->
+<div class="donate_bar">
+	<a class="btn_donate" href="javascript:;" title="Donate 打赏" 
+		onclick="document.getElementById('donate').submit()"></a>
+	<span class="donate_txt">
+		&uarr;<br/>
+		If you enjoy the blog,
+		please feel free to donate~
+		Thx for your support.
+	</span>
+	<span class="donate_txt">
+		若本文对您有帮助，求打赏~ 谢谢您的支持和鼓励。
+	</span>
+</div>
+<!-- /打赏按钮 -->
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jiawei Gu in CCNL,SCUT. <br/>
+			Here shares some of my work about tech,life and study.Welcome to communicate and discuss together.^_^</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2428685001" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/enjoyhot" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		<a href="https://www.linkedin.com/in/gugugujiawei" target="_blank" class="icon-linkedin" title="linkedin"></a>
+		
+		
+		
+		<a href="https://www.zhihu.com/people/enjoyhot" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		<a href="https://plus.google.com/111736291216286617217?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:gugugujiawei@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://www.enjoyhot.top/about" target="_blank" title="enjoyhot">enjoyhot</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+  
+    c.click();
+    
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"enjoyhot"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F715efc417137bb8b58f6b4edfa378ccd' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254644815'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254644815' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+
+  </body>
+</html>

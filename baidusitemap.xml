@@ -3,12 +3,220 @@
 
     
   <url>
-    <loc>http://www.enjoyhot.top/2014/12/11/python2.x-study/</loc>
-    <lastmod>2015-03-28T12:18:58.000Z</lastmod>
+    <loc>http://www.enjoyhot.top/2015/03/29/CSDN2Markdown/</loc>
+    <lastmod>2015-03-29T08:41:24.000Z</lastmod>
     <data>
         <display>
-        <title>python2.x学习小记</title>
-        <pubTime>2014-12-11T12:14:00.000Z</pubTime>
+        <title>export CSDN blog to Markdown</title>
+        <pubTime>2015-03-29T08:40:00.000Z</pubTime>
+        
+        <tag>markdown </tag>
+         
+         
+           
+             
+              <breadCrumb title="life" url="http://www.enjoyhot.top/categories/life/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2015/03/26/myphoto/</loc>
+    <lastmod>2015-03-29T08:37:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>photos</title>
+        <pubTime>2015-03-26T15:45:21.000Z</pubTime>
+        
+        <tag>photo </tag>
+         
+         
+           
+             
+              <breadCrumb title="photo" url="http://www.enjoyhot.top/categories/photo/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/11/21/tomcat-server/</loc>
+    <lastmod>2015-03-29T06:31:53.000Z</lastmod>
+    <data>
+        <display>
+        <title>利用简易Tomcat服务器结合MysqL实现Android手机注册与登录(服务器部分)        </title>
+        <pubTime>2014-11-21T10:27:00.000Z</pubTime>
+        
+        <tag>android </tag>
+         
+         
+           
+             
+              <breadCrumb title="android" url="http://www.enjoyhot.top/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/11/21/ndk-setup/</loc>
+    <lastmod>2015-03-29T06:27:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>windows下eclipseNDK开发兼调试环境配置        </title>
+        <pubTime>2014-11-21T10:35:00.000Z</pubTime>
+        
+        <tag>android </tag>
+         
+        <tag>ndk </tag>
+         
+         
+           
+             
+              <breadCrumb title="android" url="http://www.enjoyhot.top/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/11/21/android-reflect/</loc>
+    <lastmod>2015-03-29T06:24:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>android混淆与反射        </title>
+        <pubTime>2014-11-21T10:32:00.000Z</pubTime>
+        
+        <tag>android </tag>
+         
+         
+           
+             
+              <breadCrumb title="android" url="http://www.enjoyhot.top/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/11/21/ndk-study/</loc>
+    <lastmod>2015-03-29T06:20:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>androidNDK开发之JNI学习        </title>
+        <pubTime>2014-11-21T10:30:00.000Z</pubTime>
+        
+        <tag>android </tag>
+         
+        <tag>ndk </tag>
+         
+         
+           
+             
+              <breadCrumb title="android" url="http://www.enjoyhot.top/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/11/21/android-listview/</loc>
+    <lastmod>2015-03-29T06:13:17.000Z</lastmod>
+    <data>
+        <display>
+        <title>android利用ListView滑动刷新        </title>
+        <pubTime>2014-11-21T10:28:00.000Z</pubTime>
+        
+        <tag>android </tag>
+         
+        <tag>listview </tag>
+         
+         
+           
+             
+              <breadCrumb title="android" url="http://www.enjoyhot.top/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/11/24/linux-common-command/</loc>
+    <lastmod>2015-03-29T06:08:33.000Z</lastmod>
+    <data>
+        <display>
+        <title>linux命令操作学习（摘自鸟哥私房菜基础篇）        </title>
+        <pubTime>2014-11-24T11:37:00.000Z</pubTime>
+        
+        <tag>linux </tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://www.enjoyhot.top/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/12/10/pymongo-vs-mongoengine/</loc>
+    <lastmod>2015-03-29T06:07:38.000Z</lastmod>
+    <data>
+        <display>
+        <title>mongodb在python中的应用——利用pymongo和mongoengine        </title>
+        <pubTime>2014-12-10T04:56:00.000Z</pubTime>
+        
+        <tag>mongoengine </tag>
+         
+        <tag>pymongo </tag>
+         
+         
+           
+             
+              <breadCrumb title="database" url="http://www.enjoyhot.top/categories/database/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/12/26/html-javascript-2/</loc>
+    <lastmod>2015-03-29T05:41:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>html与javascript之动态篇        </title>
+        <pubTime>2014-12-26T05:26:00.000Z</pubTime>
+        
+        <tag>前端 </tag>
+         
+         
+           
+             
+              <breadCrumb title="前端" url="http://www.enjoyhot.top/categories/%E5%89%8D%E7%AB%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2015/01/15/python-web/</loc>
+    <lastmod>2015-03-29T05:37:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>【python web学习】python web窥探        </title>
+        <pubTime>2015-01-15T07:51:00.000Z</pubTime>
         
         <tag>python </tag>
          
@@ -23,19 +231,303 @@
 
     
   <url>
-    <loc>http://www.enjoyhot.top/2015/03/26/myphoto/</loc>
-    <lastmod>2015-03-27T08:25:37.000Z</lastmod>
+    <loc>http://www.enjoyhot.top/2015/01/18/python-analysis/</loc>
+    <lastmod>2015-03-29T04:56:41.000Z</lastmod>
     <data>
         <display>
-        <title>myphoto</title>
-        <pubTime>2015-03-26T15:45:21.000Z</pubTime>
+        <title>python进行文档抽取与解析的简单实现        </title>
+        <pubTime>2015-01-18T05:36:00.000Z</pubTime>
         
-        <tag>photo </tag>
+        <tag>python </tag>
          
          
            
              
-              <breadCrumb title="photo" url="http://www.enjoyhot.top/categories/photo/"/>
+              <breadCrumb title="python" url="http://www.enjoyhot.top/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2015/03/19/study-thinking-20150319/</loc>
+    <lastmod>2015-03-29T04:53:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>学习感悟</title>
+        <pubTime>2015-03-19T05:42:00.000Z</pubTime>
+        
+        <tag>生活 </tag>
+         
+         
+           
+             
+              <breadCrumb title="生活" url="http://www.enjoyhot.top/categories/%E7%94%9F%E6%B4%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2015/01/18/machinelearning-linear-regression/</loc>
+    <lastmod>2015-03-29T04:48:32.000Z</lastmod>
+    <data>
+        <display>
+        <title>【machine learning】linear regression        </title>
+        <pubTime>2015-01-18T11:43:00.000Z</pubTime>
+        
+        <tag>Machine Learning </tag>
+         
+         
+           
+             
+              <breadCrumb title="Machine Learning" url="http://www.enjoyhot.top/categories/Machine-Learning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2015/01/21/machinelearning-linear-regularization/</loc>
+    <lastmod>2015-03-29T04:42:20.000Z</lastmod>
+    <data>
+        <display>
+        <title>【machine learning】regularization        </title>
+        <pubTime>2015-01-21T06:57:00.000Z</pubTime>
+        
+        <tag>Machine Learning </tag>
+         
+         
+           
+             
+              <breadCrumb title="Machine Learning" url="http://www.enjoyhot.top/categories/Machine-Learning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2015/01/21/python-scrapy/</loc>
+    <lastmod>2015-03-29T04:35:05.000Z</lastmod>
+    <data>
+        <display>
+        <title>网络爬虫框架scrapy介绍及应用——抓取新浪新闻的标题内容评论        </title>
+        <pubTime>2015-01-21T07:12:00.000Z</pubTime>
+        
+        <tag>python </tag>
+         
+        <tag>scrapy </tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://www.enjoyhot.top/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2015/03/24/hpc-benchmark/</loc>
+    <lastmod>2015-03-29T03:32:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>HPC性能测试        </title>
+        <pubTime>2015-03-24T06:43:00.000Z</pubTime>
+        
+        <tag>HPC </tag>
+         
+         
+           
+             
+              <breadCrumb title="HPC" url="http://www.enjoyhot.top/categories/HPC/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2015/02/25/machinelearning-KNN/</loc>
+    <lastmod>2015-03-28T17:57:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>【machine learning】KNN算法        </title>
+        <pubTime>2015-02-25T08:04:00.000Z</pubTime>
+        
+        <tag>Machine Learning </tag>
+         
+         
+           
+             
+              <breadCrumb title="Machine Learning" url="http://www.enjoyhot.top/categories/Machine-Learning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/11/21/django-csdn/</loc>
+    <lastmod>2015-03-28T17:56:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>关于django的几篇文章</title>
+        <pubTime>2014-11-21T10:28:00.000Z</pubTime>
+        
+        <tag>django </tag>
+         
+         
+           
+             
+              <breadCrumb title="django" url="http://www.enjoyhot.top/categories/django/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/12/26/html-javascript-1/</loc>
+    <lastmod>2015-03-28T17:21:07.000Z</lastmod>
+    <data>
+        <display>
+        <title>html与javascript之网络篇</title>
+        <pubTime>2014-12-26T06:09:00.000Z</pubTime>
+        
+        <tag>html </tag>
+         
+        <tag>javascript </tag>
+         
+         
+           
+             
+              <breadCrumb title="前端" url="http://www.enjoyhot.top/categories/%E5%89%8D%E7%AB%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2015/01/09/python-chinese/</loc>
+    <lastmod>2015-03-28T17:20:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>python spider error occurs to Chinese words</title>
+        <pubTime>2015-01-09T11:51:00.000Z</pubTime>
+        
+        <tag>python </tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://www.enjoyhot.top/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/12/09/linux-management-command/</loc>
+    <lastmod>2015-03-28T17:19:09.000Z</lastmod>
+    <data>
+        <display>
+        <title>linux系统管理常用命令（不定时更新）        </title>
+        <pubTime>2014-12-09T13:51:00.000Z</pubTime>
+        
+        <tag>linux </tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://www.enjoyhot.top/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/11/21/tomcat-client/</loc>
+    <lastmod>2015-03-28T17:18:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>利用简易Tomcat服务器结合MysqL实现Android手机注册与登录(客户端部分)        </title>
+        <pubTime>2014-11-21T10:22:00.000Z</pubTime>
+        
+        <tag>android </tag>
+         
+         
+           
+             
+              <breadCrumb title="android" url="http://www.enjoyhot.top/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/12/13/drink-tea/</loc>
+    <lastmod>2015-03-28T13:09:38.000Z</lastmod>
+    <data>
+        <display>
+        <title>冲茶之道</title>
+        <pubTime>2014-12-13T09:02:00.000Z</pubTime>
+        
+        <tag>茶语 </tag>
+         
+         
+           
+             
+              <breadCrumb title="茶语" url="http://www.enjoyhot.top/categories/%E8%8C%B6%E8%AF%AD/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/11/21/ubuntu-internet/</loc>
+    <lastmod>2015-03-28T12:59:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>浅谈Virtual Box下，ubuntu系统能否被外网访问的问题</title>
+        <pubTime>2014-11-21T10:41:00.000Z</pubTime>
+        
+        <tag>linux </tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://www.enjoyhot.top/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.enjoyhot.top/2014/12/11/python2.x-study/</loc>
+    <lastmod>2015-03-28T12:35:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>python2.x学习小记</title>
+        <pubTime>2014-12-11T12:14:00.000Z</pubTime>
+        
+        <tag>python </tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://www.enjoyhot.top/categories/python/"/>
           
         </display>
     </data>
