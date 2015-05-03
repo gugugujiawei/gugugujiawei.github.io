@@ -138,7 +138,8 @@
 <li>G是素的。</li>
 <li>G是完全稠密的。从计算的角度，这是很糟糕的。但G可以写为非常稀疏的超链接矩阵H的秩一修正。</li>
 </ul>
-<p>\begin{align} G &amp;=\alpha S + (1-\alpha)1/n ee^T \ &amp; =\alpha (H + a(1/n e^T)) + (1-\alpha)1/n ee^T \ &amp; =\alpha H+[\alpha(a)+(1-\alpha)e]1/ne^T \end{align}<br>因此，谷歌修正后的PageRank法为<br>$$\pi^{（k+1）T}=\pi^{（k）T}G$$</p>
+<p>\begin{align}<br>G &amp;=\alpha S + (1-\alpha)1/n ee^T \<br>&amp; =\alpha (H + a(1/n e^T)) + (1-\alpha)1/n ee^T \<br>&amp; =\alpha H+[\alpha(a)+(1-\alpha)e]1/ne^T<br>\end{align}</p>
+<p>因此，谷歌修正后的PageRank法为<br>$$\pi^{（k+1）T}=\pi^{（k）T}G$$</p>
 <h2 id="2-4_PageRank向量的计算">2.4 PageRank向量的计算</h2><p>将求解$\pi^T$转换为如下特征向量问题<br>$$\pi^T=\pi^TG \<br>    \pi^Te=1$$<br>将求解$\pi^T$转换为求解如下的性齐次系统：<br>$$\pi^T(E-G)=0^T \<br>    \pi^Te=1$$<br>第一个系统为找到对应于主特征值$\lambda_1=1$的G的归一化主左特征向量。在第二个系统中，目标则是找到E-G的归一化左零向量。两个系统均服从归一化方程$\pi^Te=1$，该方程确保$\pi^T$是一个概率向量。</p>
 <h3 id="2-4-1_幂法计算">2.4.1 幂法计算</h3><p>PageRank矩阵G的特点使得幂法成为了显而易见的最佳选择。幂法是求取矩阵主特征值和特征向量的最古老同时也是最简单的迭代方法之一。缺点的计算速度缓慢。<br>\begin{align} \pi^{（k+1）T} &amp; =\pi^{（k）T}G \ &amp; =\alpha S + (1-\alpha)1/n \pi^{（k）T} ee^T \ &amp; =\alpha (H + a(1/n e^T)) + (1-\alpha)1/n ee^T \ &amp; =\alpha \pi^{（k）T} H+[\alpha \pi^{（k）T} a+1-\alpha]e^T/n \end{align}<br>式中，向量-矩阵乘法$\alpha \pi^{（k）T} H$执行于H这个极端稀疏的矩阵之上，而S和G从来就没有被实际生成或存储过，每个向量-矩阵乘法的复杂度为O(n)，因为H的每一行有差不多10个非零元素，这就是使用幂法的主要原因。<br>这里还有几个优点：</p>
 <ul>
